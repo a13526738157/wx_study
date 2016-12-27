@@ -1,0 +1,16 @@
+<?php
+namespace Common\Controller;
+use Think\Controller;
+use Think\Auth;
+use Org\Wechat\wechat;
+class AdminController extends Controller {
+    public function _initialize(){
+		$options = array(
+				'token'=>'weixin', //填写你设定的key
+		        'encodingaeskey'=>'dCAZhdWvBHrz2vJjBzTOgMzqeQfUdIu5exSAQdgojQa' //填写加密用的EncodingAESKey，如接口为明文模式可忽略
+			);
+		$weObj = new Wechat($options);
+		$weObj->valid();
+	}
+
+}
