@@ -13,6 +13,7 @@ class IndexController extends Controller
 
 			if(!$accessArr['accessToken']||$accessArr['time']<time()){
 				$accessArr['accessToken'] = $this->weObj->getOauthAccessToken();
+				$this->_log(json_encode($accessArr));
 				$accessArr['time'] = time()+7100;
 				F('accessToken',$accessArr);
 			}
