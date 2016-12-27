@@ -11,6 +11,7 @@ class AdminController extends Controller {
 			);
 		$this->weObj = new Wechat($options);
 		$this->weObj->valid();
+		$this->bulid_menu();
 		$type = $this->weObj->getRev()->getRevType();
 		M('test')->add(array('content'=>$type));
 		switch($type) {
@@ -27,5 +28,20 @@ class AdminController extends Controller {
 				
 			}	
 	}
+	private function bulid_menu(){
+		//获取菜单操作:
+	$weObj = $this->weObj;
+    $menu = $weObj->getMenu();
+    //设置菜单
+    $newmenu =  array(
+    		"button"=>
+    			array(
+    				array('type'=>'click','name'=>'最新消息','key'=>'MENU_KEY_NEWS'),
+    				array('type'=>'view','name'=>'我要搜索','url'=>'http://www.baidu.com'),
+    				)
+   		);
+   $result = $weObj->createMenu($newmenu);
+	}
+
 
 }
