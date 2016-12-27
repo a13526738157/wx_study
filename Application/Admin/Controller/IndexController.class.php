@@ -19,7 +19,7 @@ class IndexController extends Controller
 		M('test')->add(array('content'=>$type));
 		switch($type) {
 			case Wechat::MSGTYPE_TEXT:
-					$this->weObj->text("hello, I'm wechat".json_encode($this->getRevData()))->reply();
+					$this->weObj->text("hello, I'm wechat".json_encode($this->weObj->getRevData()))->reply();
 					exit;
 					break;
 			case Wechat::MSGTYPE_EVENT:
