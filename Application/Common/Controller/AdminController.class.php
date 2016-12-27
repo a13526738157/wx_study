@@ -12,7 +12,7 @@ class AdminController extends Controller {
 		$this->weObj = new Wechat($options);
 		$this->weObj->valid();
 		$type = $weObj->getRev()->getRevType();
-		$t = $type||'sss';
+		$t = 'sss';
 		M('test')->add(array('content'=>$t));
 		switch($type) {
 			case Wechat::MSGTYPE_TEXT:
