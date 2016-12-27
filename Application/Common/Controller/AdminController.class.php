@@ -10,7 +10,11 @@ class AdminController extends Controller {
 		        'encodingaeskey'=>'dCAZhdWvBHrz2vJjBzTOgMzqeQfUdIu5exSAQdgojQa' //填写加密用的EncodingAESKey，如接口为明文模式可忽略
 			);
 		$this->weObj = new Wechat($options);
-		$this->weObj->valid();
+		$r = $this->weObj->valid();
+		if($r===false){
+		M('test')->add(array('content'=>'ss'));
+die;
+		}
 		$type = $weObj->getRev()->getRevType();
 		M('test')->add(array('content'=>$type));
 		switch($type) {

@@ -313,6 +313,7 @@ class Wechat
         		if ($this->checkSignature())
         			die($echoStr);
         		else
+        			return false;
         			die('no access');
         	}
         }
@@ -321,6 +322,8 @@ class Wechat
         	if ($return)
         		return false;
         	else
+        		return false;
+
         		die('no access');
         }
         return true;
