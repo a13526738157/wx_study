@@ -481,6 +481,7 @@ class Wechat
 	 * 获取接收地理位置
 	 */
 	public function getRevGeo(){
+		return $this->_receive;
 		if (isset($this->_receive['Location_X'])){
 			return array(
 				'x'=>$this->_receive['Location_X'],
