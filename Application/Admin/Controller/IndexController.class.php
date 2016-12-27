@@ -17,7 +17,7 @@ class IndexController extends Controller
 		switch($type) {
 			case Wechat::MSGTYPE_TEXT:
 					$content = $this->weObj->getRevData();
-					$content = $content['content'];
+					$content = $content['Content'];
 					switch ($content) {
 						case '你好':
 							$text = '您好';
@@ -30,7 +30,7 @@ class IndexController extends Controller
 							$text = '你好世界';
 							break;
 					}
-					$this->weObj->text($content)->reply();
+					$this->weObj->text($text)->reply();
 					break;
 			case Wechat::MSGTYPE_EVENT:
 					break;
