@@ -44,8 +44,11 @@ class IndexController extends Controller
 			case EVENT_LOCATION:
 				$this->weObj->text('上报地理位置成功')->reply();
 				break;
+			case EVENT_MENU_CLICK:
+				$this->weObj->text('您触发了点击事件')->reply();
+				break;	
 			default:
-				$this->weObj->text('更多事件')->reply();
+				//$this->weObj->text('更多事件')->reply();
 				break;
 		}			
 	}
