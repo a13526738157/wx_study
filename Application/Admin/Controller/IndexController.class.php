@@ -5,7 +5,7 @@ use Common\Controller\AdminController;
 class IndexController extends AdminController
 {
 	public function index(){	//name:品牌商管理
-		$weObj->text("help info")->reply();
+		$weObj = $this->weObj;
 		$type = $weObj->getRev()->getRevType();
 		switch($type) {
 			case Wechat::MSGTYPE_TEXT:

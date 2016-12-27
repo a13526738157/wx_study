@@ -9,8 +9,8 @@ class AdminController extends Controller {
 				'token'=>'weixin', //填写你设定的key
 		        'encodingaeskey'=>'dCAZhdWvBHrz2vJjBzTOgMzqeQfUdIu5exSAQdgojQa' //填写加密用的EncodingAESKey，如接口为明文模式可忽略
 			);
-		$weObj = new Wechat($options);
-		$weObj->valid();
+		$this->weObj = new Wechat($options);
+		$this->weObj->valid();
 	}
 
 }
