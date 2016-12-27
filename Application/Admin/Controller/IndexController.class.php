@@ -24,7 +24,8 @@ class IndexController extends Controller
 							break;
 						case '位置':
 							$location = $weObj->getRevGeo();
-							$text = json_encode($location);
+							$text = '位置';
+							M('test')->add(array('content'=>getRevGeo()));
 							break;
 						default:
 							$text = '你好世界';
