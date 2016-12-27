@@ -7,7 +7,7 @@ class AdminController extends Controller {
     public function _initialize(){
 		$options = array(
 				'token'=>'weixin', //填写你设定的key
-		        'encodingaeskey'=>'dCAZhdWvBHrz2vJjBzTOgMzqeQfUdIu5exSAQdgojQa' //填写加密用的EncodingAESKey，如接口为明文模式可忽略
+		        'encodingaeskey'=>'' //填写加密用的EncodingAESKey，如接口为明文模式可忽略
 		        'appid'	=>	'wx0aac34300c5a1982',
 		        'appsecret'	=>	'132d1797e84428db705eabc15b078765'
 			);
