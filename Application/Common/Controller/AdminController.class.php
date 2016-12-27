@@ -11,7 +11,8 @@ class AdminController extends Controller {
 			);
 		$this->weObj = new Wechat($options);
 		$this->weObj->valid();
-		M('test')->add(array('content'=>'验证通过'));
+		M('test')->add(array('content'=>json_encode(file_get_contents("php://input"))));
+
 		$message = $weObj->getRev();
 		M('test')->add(array('content'=>'获得的消息:'.$message));
 		$type = $weObj->getRev()->getRevType();
