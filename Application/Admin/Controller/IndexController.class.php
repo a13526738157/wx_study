@@ -1,11 +1,13 @@
 <?php
 namespace Admin\Controller;
 use Think\Controller;
-use Common\Controller\AdminController;
 use Org\Wechat\wechat;
 class IndexController extends Controller
 {
     public function _initialize(){
+	
+	}
+	public function index(){
 		$options = array(
 				'token'=>'weixin', //填写你设定的key
 		        'encodingaeskey'=>'dCAZhdWvBHrz2vJjBzTOgMzqeQfUdIu5exSAQdgojQa', //填写加密用的EncodingAESKey，如接口为明文模式可忽略
@@ -16,10 +18,11 @@ class IndexController extends Controller
 		$this->weObj->valid();
 		$this->bulid_menu();
 		$type = $this->weObj->getRev()->getRevType();
-		M('test')->add(array('content'=>$type));
+		M('test')->add(array('content'=>json_encode($this->weObj->getRevData())));
+
 		switch($type) {
 			case Wechat::MSGTYPE_TEXT:
-					$this->weObj->text("hello, I'm wechat".json_encode($this->weObj->getRevData()))->reply();
+					$this->weObj->text("hello, I'm wechat")->reply();
 					exit;
 					break;
 			case Wechat::MSGTYPE_EVENT:
@@ -29,7 +32,7 @@ class IndexController extends Controller
 			default:
 			$this->weObj->text("help info")->reply();
 				
-			}	
+			}		
 	}
 	private function bulid_menu(){
 		//获取菜单操作:
