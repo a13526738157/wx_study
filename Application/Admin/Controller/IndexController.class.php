@@ -14,7 +14,7 @@ class IndexController extends Controller
 		$this->bulid_menu();
 		//消息监听
 		$type = $this->weObj->getRev()->getRevType();
-		M('test')->add(array('content'=>'消息类型：'.$type)));
+		M('test')->add(array('content'=>'消息类型：'.$type));
 		switch($type) {
 			case Wechat::MSGTYPE_TEXT:
 					$content = $this->weObj->getRevData();
@@ -44,7 +44,6 @@ class IndexController extends Controller
 			case EVENT_LOCATION:
 				$this->weObj->text('上报地理位置成功')->reply();
 				break;
-			
 			default:
 				$this->weObj->text('更多事件')->reply();
 				break;
