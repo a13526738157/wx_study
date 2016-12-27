@@ -12,10 +12,11 @@ class IndexController extends Controller
 		$this->weObj = new Wechat($options);
 		$this->weObj->valid();
 		$this->bulid_menu();
-		//消息监听
+		//获取回复类型
 		$type = $this->weObj->getRev()->getRevType();
 		M('test')->add(array('content'=>'消息类型：'.$type));
 		switch($type) {
+			//消息回复
 			case Wechat::MSGTYPE_TEXT:
 					$content = $this->weObj->getRevData();
 					$content = $content['Content'];
@@ -29,14 +30,32 @@ class IndexController extends Controller
 					}
 					$this->weObj->text($text)->reply();
 					break;
+			//事件监听
 			case Wechat::MSGTYPE_EVENT:
+					$this->_event();
 					break;
 			case Wechat::MSGTYPE_IMAGE:
-					break;
+					break;		
 			default:
 					$this->weObj->text("help info")->reply();
 					break;
 			}
+			
+	}
+	private function bulid_menu(){
+		//获取菜单操作:
+		$weObj = $this->weObj;
+	    $menu = $weObj->getMenu();
+	    //设置菜单
+	    $newmenu =  C('WX_MENU');
+	   	$result = $weObj->createMenu($newmenu);
+	}
+	//消息处理
+	private function _msg(){
+
+	}
+	//事件处理
+	private function _event(){
 		//事件监听
 		$event = $this->weObj->getRevEvent();
 		M('test')->add(array('content'=>'事件类型：'.$event));
@@ -50,14 +69,6 @@ class IndexController extends Controller
 			default:
 				//$this->weObj->text('更多事件')->reply();
 				break;
-		}			
-	}
-	private function bulid_menu(){
-		//获取菜单操作:
-	$weObj = $this->weObj;
-    $menu = $weObj->getMenu();
-    //设置菜单
-    $newmenu =  C('WX_MENU');
-   $result = $weObj->createMenu($newmenu);
+		}		
 	}
 }
