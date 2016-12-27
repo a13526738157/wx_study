@@ -24,7 +24,8 @@ class IndexController extends Controller
 							break;
 						case '位置':
 							$location = $this->weObj->getRevGeo();
-							$text = '您的经度'.$location['Longitude'];
+							//$text = '您的经度'.$location['Longitude'];
+							$text = '位置';
 							break;
 						default:
 							$text = '你好世界';
