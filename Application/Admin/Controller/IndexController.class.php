@@ -16,6 +16,7 @@ class IndexController extends AdminController
 			case Wechat::MSGTYPE_IMAGE:
 					break;
 			default:
+			$weObj->text("help info")->reply();
 				
 			}
 	}
