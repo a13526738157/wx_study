@@ -489,7 +489,7 @@ class Wechat
 				'label'=>$this->_receive['Label']
 			);
 		} else
-			return false;
+			return 1;
 	}
 
 	/**
