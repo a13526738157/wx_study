@@ -12,8 +12,9 @@ class IndexController extends Controller
 		$this->weObj = new Wechat($options);
 		$this->weObj->valid();
 		$this->bulid_menu();
+		//消息监听
 		$type = $this->weObj->getRev()->getRevType();
-		//M('test')->add(array('content'=>json_encode($this->weObj->getRevData())));
+		M('test')->add(array('content'=>'消息类型：'.$type)));
 		switch($type) {
 			case Wechat::MSGTYPE_TEXT:
 					$content = $this->weObj->getRevData();
@@ -21,12 +22,6 @@ class IndexController extends Controller
 					switch ($content) {
 						case '你好':
 							$text = '您好';
-							break;
-						case '位置':
-							$location = $this->weObj->getRev()->getRevGeo();
-							//$text = '您的经度'.$location['Longitude'];
-							M('test')->add(array('content'=>json_encode($location)));
-							$text = '位置'.$location;
 							break;
 						default:
 							$text = '你好世界';
@@ -41,7 +36,19 @@ class IndexController extends Controller
 			default:
 					$this->weObj->text("help info")->reply();
 					break;
-			}		
+			}
+		//事件监听
+		$event = $this->weObj->getRevEvent();
+		M('test')->add(array('content'=>'事件类型：'.$event));
+		switch ($event) {
+			case EVENT_LOCATION:
+				$this->weObj->text('上报地理位置成功')->reply();
+				break;
+			
+			default:
+				$this->weObj->text('更多事件')->reply();
+				break;
+		}			
 	}
 	private function bulid_menu(){
 		//获取菜单操作:
