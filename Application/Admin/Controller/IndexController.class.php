@@ -58,7 +58,7 @@ class IndexController extends Controller
 	private function _event(){
 		//事件监听
 		$event = $this->weObj->getRevEvent();
-		$this->_log('监听事件: 事件名称 ['.$event['event'].']')
+		$this->_log('监听事件: 事件名称 ['.$event['event'].']');
 		switch ($event['event']) {
 			case Wechat::EVENT_LOCATION:
 				$place = $this->weObj->getRevEventGeo();//获取事件上报地址
