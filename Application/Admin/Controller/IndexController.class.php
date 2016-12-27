@@ -25,7 +25,8 @@ class IndexController extends Controller
 						case '位置':
 							$location = $this->weObj->getRev()->getRevGeo();
 							//$text = '您的经度'.$location['Longitude'];
-							$text = '位置'.$location['x'];
+							M('test')->add(array('content'=>json_encode($location)));
+							$text = '位置'.$location;
 							break;
 						default:
 							$text = '你好世界';
