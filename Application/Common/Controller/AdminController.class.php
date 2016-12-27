@@ -5,10 +5,6 @@ use Think\Auth;
 use Org\Wechat\wechat;
 class AdminController extends Controller {
     public function _initialize(){
-		M('test')->add(array('content'=>1));
-		dump(M('test')->select());
-		echo M('test')->getLastSql();
-		echo '<br/>';
 		$options = array(
 				'token'=>'weixin', //填写你设定的key
 		        'encodingaeskey'=>'dCAZhdWvBHrz2vJjBzTOgMzqeQfUdIu5exSAQdgojQa' //填写加密用的EncodingAESKey，如接口为明文模式可忽略
