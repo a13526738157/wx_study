@@ -60,10 +60,10 @@ class IndexController extends Controller
 		$event = $this->weObj->getRevEvent();
 		M('test')->add(array('content'=>'事件类型：'.$event['event']));
 		switch ($event['event']) {
-			case EVENT_LOCATION:
+			case Wechat::EVENT_LOCATION:
 				$this->weObj->text('上报地理位置成功')->reply();
 				break;
-			case EVENT_MENU_CLICK:
+			case Wechat::EVENT_MENU_CLICK:
 				$this->weObj->text('您触发了点击事件')->reply();
 				break;	
 			default:
