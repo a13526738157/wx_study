@@ -30,7 +30,7 @@ class IndexController extends Controller
 							$text = '你好世界';
 							break;
 					}
-					$this->weObj->text($text)->reply();
+					$this->weObj->text($content)->reply();
 					break;
 			case Wechat::MSGTYPE_EVENT:
 					break;
