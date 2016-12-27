@@ -40,7 +40,7 @@ class IndexController extends Controller
 		//事件监听
 		$event = $this->weObj->getRevEvent();
 		M('test')->add(array('content'=>'事件类型：'.$event));
-		switch ($event) {
+		switch ($event['Event']) {
 			case EVENT_LOCATION:
 				$this->weObj->text('上报地理位置成功')->reply();
 				break;
