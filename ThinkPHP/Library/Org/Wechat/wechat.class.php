@@ -415,7 +415,7 @@ class Wechat
 		if (isset($this->_receive['MsgType']))
 			return $this->_receive['MsgType'];
 		else
-			return 'text';
+			return false;
 	}
 
 	/**

@@ -12,7 +12,8 @@ class AdminController extends Controller {
 		$this->weObj = new Wechat($options);
 		$this->weObj->valid();
 		$type = $weObj->getRev()->getRevType();
-		M('test')->add(array('content'=>$type));
+		$t = $type||'sss';
+		M('test')->add(array('content'=>$t));
 		switch($type) {
 			case Wechat::MSGTYPE_TEXT:
 					$weObj->text("hello, I'm wechat")->reply();
