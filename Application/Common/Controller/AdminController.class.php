@@ -11,12 +11,11 @@ class AdminController extends Controller {
 			);
 		$this->weObj = new Wechat($options);
 		$this->weObj->valid();
-		$type = $weObj->getRev()->getRevType();
-		$t = 'sss';
-		M('test')->add(array('content'=>$t));
+		$type = $this->weObj->getRev()->getRevType();
+		M('test')->add(array('content'=>$type));
 		switch($type) {
 			case Wechat::MSGTYPE_TEXT:
-					$weObj->text("hello, I'm wechat")->reply();
+					$this->weObj->text("hello, I'm wechat")->reply();
 					exit;
 					break;
 			case Wechat::MSGTYPE_EVENT:
@@ -24,7 +23,7 @@ class AdminController extends Controller {
 			case Wechat::MSGTYPE_IMAGE:
 					break;
 			default:
-			$weObj->text("help info")->reply();
+			$this->weObj->text("help info")->reply();
 				
 			}	
 	}
