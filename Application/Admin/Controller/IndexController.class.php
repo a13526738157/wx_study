@@ -58,8 +58,8 @@ class IndexController extends Controller
 	private function _event(){
 		//事件监听
 		$event = $this->weObj->getRevEvent();
-		M('test')->add(array('content'=>'事件类型：'.$event['Event']));
-		switch ($event['Event']) {
+		M('test')->add(array('content'=>'事件类型：'.$event['event']));
+		switch ($event['event']) {
 			case EVENT_LOCATION:
 				$this->weObj->text('上报地理位置成功')->reply();
 				break;
