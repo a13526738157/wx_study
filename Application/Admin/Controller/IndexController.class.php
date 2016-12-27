@@ -58,10 +58,13 @@ class IndexController extends Controller
 	private function _event(){
 		//事件监听
 		$event = $this->weObj->getRevEvent();
-		M('test')->add(array('content'=>'事件类型：'.$event['event']));
+		$this->_log('监听事件: 事件名称 ['.$event['event'].']')
 		switch ($event['event']) {
 			case Wechat::EVENT_LOCATION:
-				$this->weObj->text('上报地理位置成功')->reply();
+				$place = $this->weObj->getRevEventGeo();//获取事件上报地址
+
+				$this->_log('上报地址 x:'.$place['x'].' y:'.$place['y'].' 更多:'.$place['precision']);
+				$this->weObj->text('上报地理位置成功 x:'.$place['x'].' y:'.$place['y'])->reply();
 				break;
 			case Wechat::EVENT_MENU_CLICK:
 				$this->weObj->text('您触发了点击事件')->reply();
@@ -70,5 +73,9 @@ class IndexController extends Controller
 				//$this->weObj->text('更多事件')->reply();
 				break;
 		}		
+	}
+	private function _log($content){
+		$data = $this->weObj->getRevData();
+		M('test')->add(array('content'=>$content,'user'=>$data['FromUserName']));
 	}
 }
