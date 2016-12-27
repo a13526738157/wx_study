@@ -5,13 +5,21 @@ use Org\Wechat\wechat;
 class IndexController extends Controller
 {
     public function _initialize(){
-	
+			$options = C('WX_OPTIONS');
+			$this->weObj = new Wechat($options);
+			$this->bulid_menu();
+			//获取accessToken
+			$accessArr = F('accessToken');
+
+			if(!$accessArr['accessToken']||$accessArr['time']<time()){
+				$accessArr['accessToken'] = $this->weObj->getOauthAccessToken();
+				$accessArr['time'] = time()+7100;
+				F('accessToken',$accessArr);
+			}
+
 	}
 	public function index(){
-		$options = C('WX_OPTIONS');
-		$this->weObj = new Wechat($options);
 		$this->weObj->valid();
-		$this->bulid_menu();
 		//获取回复类型
 		$type = $this->weObj->getRev()->getRevType();
 		M('test')->add(array('content'=>'消息类型：'.$type));
