@@ -130,13 +130,10 @@ class IndexController extends Controller
 	private function _regUser($userinfo){
 		$openid = $userinfo['openid'];
 		$user = M('users')->where(array('openid'=>$openid))->find();
-		if($user){
-			$this->_log($userinfo['nickname'].'yi注册');
-		
+		if($user){		
 			$return['code'] = 2;//已拥有账号
 			return $return;
 		}
-		$this->_log($userinfo['nickname'].'正在注册');
 
 		//判断用户是否登陆
 		$pwd = '000000';
@@ -150,6 +147,8 @@ class IndexController extends Controller
 		$data['pay_passwrod'] = md5($pwd);
 		$data['headImgUrl'] = $userinfo['headImgUrl'];
 		M('users')->add($data);
+		$this->_log($userinfo['nickname'].'正在注册');
+		
 		$return['code'] = 1;//注册
 		$return['username'] = $data['username'];
 		return $return;
