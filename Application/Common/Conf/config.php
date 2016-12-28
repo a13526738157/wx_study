@@ -9,7 +9,7 @@ return array(
     'DB_USER' => 'root', // 用户名
     'DB_PWD' => 'root', // 密码
     'DB_PORT' => 3306, // 端口
-    'DB_PREFIX' => 'sj_', // 数据库表前缀
+    'DB_PREFIX' => 'ht_', // 数据库表前缀
     'DB_CHARSET'=> 'utf8', // 字符集
 	'MODULE_ALLOW_LIST' => array('Common','Admin','Wx'),
 	'DEFAULT_MODULE' => 'Admin', //默认模块

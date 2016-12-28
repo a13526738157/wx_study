@@ -110,7 +110,7 @@ class IndexController extends Controller
 				break;
 		}		
 	}
-	private function _log($content,$tableName = 'test'){
+	private function _log($content,$tableName = 'actionLog'){
 		$data = $this->weObj->getRevData();
 		M($tableName)->add(array('content'=>$content,'user'=>$data['FromUserName']));
 	}
