@@ -129,13 +129,15 @@ class IndexController extends Controller
 	//注册用户
 	private function _regUser($userinfo){
 		$openid = $userinfo['openid'];
-		$this->_log($userinfo['nickname'].'正在注册');
-
 		$user = M('users')->where(array('openid'=>$openid))->find();
 		if($user){
+			$this->_log($userinfo['nickname'].'yi注册');
+		
 			$return['code'] = 2;//已拥有账号
 			return $return;
 		}
+		$this->_log($userinfo['nickname'].'正在注册');
+
 		//判断用户是否登陆
 		$pwd = '000000';
 		$return['pwd'] = $pwd;
