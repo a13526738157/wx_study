@@ -22,7 +22,7 @@ class IndexController extends Controller
 		$openid = $content['FromUserName'];
 		$user = M('users')->where(array('openid'=>$openid))->find();
 		if($user){
-			$userinfo = $user;
+			$this->userinfo = $user;
 		}else{
 			$this->userinfo = $this->weObj->getUserInfo($openid);//用户信息		
 		}	
