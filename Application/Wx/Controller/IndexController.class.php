@@ -18,7 +18,14 @@ class IndexController extends Controller
 	public function index(){
 		//获取回复类型
 		$type = $this->weObj->getRev()->getRevType();
-		$content = $this->weObj->getRevData();		
+		$content = $this->weObj->getRevData();
+		$openid = $content['FromUserName'];
+		$user = M('users')->where(array('openid'=>$openid))->find();
+		if($user){
+			$userinfo = $user;
+		}else{
+			$this->userinfo = $this->weObj->getUserInfo($openid);//用户信息		
+		}	
 		switch($type) {
 			//消息回复
 			case TPWechat::MSGTYPE_TEXT:
@@ -62,10 +69,9 @@ class IndexController extends Controller
 	private function _event($data){
 		//事件监听
 		$event = $this->weObj->getRevEvent();
+		$userinfo = $this->userinfo;
 		$this->_log('监听事件: 事件名称 ['.$event['event'].']');
-		//获取发送信息
-		$openid = $data['FromUserName'];
-		$userinfo = $this->weObj->getUserInfo($openid);//用户信息		
+		//获取发送信息	
 		switch ($event['event']) {
 			case TPWechat::EVENT_LOCATION:
 				$place = $this->weObj->getRevEventGeo();//获取事件上报地址
@@ -105,14 +111,16 @@ class IndexController extends Controller
 					$this->weObj->text($text)->reply();
 				}		
 				break;
+			case TPWechat::EVENT_UNSUBSCRIBE://取消订阅
+				$this->_log($userinfo['nickname'])	
 			default:
 				//$this->weObj->text('更多事件')->reply();
 				break;
 		}		
 	}
-	private function _log($content,$tableName = 'actionLog'){
-		$data = $this->weObj->getRevData();
-		M($tableName)->add(array('content'=>$content,'user'=>$data['FromUserName']));
+	private function _log($content,$tableName = 'actionlog'){
+		$userinfo = $this->userinfo;
+		M($tableName)->add(array('content'=>$content,'user'=>$userinfo['nickname']));
 	}
 	//注册用户
 	private function _regUser($userinfo){
@@ -127,7 +135,7 @@ class IndexController extends Controller
 		$return['pwd'] = $pwd;
 		$data = array();
 		$data['username'] = 'wx_'.time();
-		$data['nicename'] = $userinfo['nickname'];
+		$data['nickname'] = $userinfo['nickname'];
 		$data['regtime'] = time();
 		$data['openid'] = $openid;
 		$data['regip'] = get_client_ip();
