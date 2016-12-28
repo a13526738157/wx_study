@@ -9,10 +9,10 @@ return array(
     				array(
                         'name'=>'更多功能',
                         'sub_button'    =>  array(
-                            array('type'  =>  'pic_sysphoto','name'  =>  '系统拍照','key'   =>  'selectImg'),
-                            array('type'  =>  'pic_photo_or_album','name'   =>  '选取相册','key'=>'photos')
+                            array('type' => 'pic_sysphoto','name' => '系统拍照','key' => 'selectImg'),
+                            array('type' => 'pic_photo_or_album','name'  =>  '选取相册','key'=>'photos')
+                            )
                         )
-                    )
     				)	
 		),
 	//基本配置

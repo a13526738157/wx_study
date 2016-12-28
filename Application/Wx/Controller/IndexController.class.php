@@ -2,7 +2,7 @@
 namespace Wx\Controller;
 use Think\Controller;
 use Org\Wechat\wechat;
-use Org\Net\Thinkphp\TPWechat;
+use Org\Wechat\Thinkphp\TPWechat;
 /**
 *微信服务接受
 *
