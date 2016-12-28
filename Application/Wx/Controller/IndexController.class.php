@@ -13,7 +13,10 @@ class IndexController extends Controller
 			$options = C('WX_OPTIONS');
 			$this->weObj = new TPWechat($options);
 			$this->weObj->valid();
-			$this->bulid_menu();
+			$is_menu = M('sysConfig')->where(array('name'=>'menu'))->find();
+			if($is_menu['value']){
+				$this->bulid_menu();
+			}
 	}
 	public function index(){
 		//获取回复类型
