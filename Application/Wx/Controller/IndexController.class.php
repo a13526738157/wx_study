@@ -141,10 +141,10 @@ class IndexController extends Controller
 		$data = array();
 		$data['username'] = 'wx_'+time();
 		$data['nicename'] = $userinfo['nickname'];
-		$data['regtime'] = time();
-		$data['regip'] = get_client_ip();
-		$data['password'] = md5($pwd);
-		$data['pay_passwrod'] = md5($pwd);
+		//$data['regtime'] = time();
+		//$data['regip'] = get_client_ip();
+		//$data['password'] = md5($pwd);
+		//$data['pay_passwrod'] = md5($pwd);
 		//$data['headImgUrl'] = $userinfo['headImgUrl'];
 		M('users')->add($data);
 
