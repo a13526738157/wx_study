@@ -145,10 +145,9 @@ class IndexController extends Controller
 		$data['regip'] = get_client_ip();
 		$data['password'] = md5($pwd);
 		$data['pay_passwrod'] = md5($pwd);
-		$data['headImgUrl'] = $userinfo['headImgUrl'];
+		//$data['headImgUrl'] = $userinfo['headImgUrl'];
 		M('users')->add($data);
-		$this->_log($userinfo['nickname'].'正在注册');
-		
+
 		$return['code'] = 1;//注册
 		$return['username'] = $data['username'];
 		return $return;
