@@ -112,7 +112,8 @@ class IndexController extends Controller
 				}		
 				break;
 			case TPWechat::EVENT_UNSUBSCRIBE://取消订阅
-				$this->_log($userinfo['nickname'])	
+				$this->_log($userinfo['nickname']);
+				break;	
 			default:
 				//$this->weObj->text('更多事件')->reply();
 				break;
