@@ -11,7 +11,7 @@ return array(
     'DB_PORT' => 3306, // 端口
     'DB_PREFIX' => 'sj_', // 数据库表前缀
     'DB_CHARSET'=> 'utf8', // 字符集
-	'MODULE_ALLOW_LIST' => array('Common','Admin'),
+	'MODULE_ALLOW_LIST' => array('Common','Admin','Wx'),
 	'DEFAULT_MODULE' => 'Admin', //默认模块
     'DEFAULT_CONTROLLER' => 'Index', // 默认控制器名称
     'DEFAULT_ACTION' => 'index', // 默认操作名称
@@ -19,11 +19,13 @@ return array(
     'DEFAULT_TIMEZONE' => 'PRC', // 默认时区
     'DEFAULT_FILTER' => 'htmlspecialchars', // 默认参数过滤方法 用于I函数...
     'URL_MODEL' => '2', //PATHINFO模式
-	'UPLOAD_PATH' => './Public/Uploads/',
-	'UPLOAD_PATH_ROOT' => '/Public/Uploads/',
-    'UPLOAD_YYZZ_PATH' => './Public/Uploads/cert/',
-    'UPLOAD_YYZZ_PATH_ROOT' => '/Public/Uploads/cert/',
-
+    //多级域名
+    'APP_SUB_DOMAIN_DEPLOY'   =>    1, // 开启子域名配置
+    'APP_SUB_DOMAIN_RULES'    =>    array(   
+        'ht'  => 'Admin',  // admin.domain1.com域名指向Admin模块
+        'wx.woxuewangs.com'	=>	'Wx',
+        'woxuewangs.com'	=>	'Home',
+    ),
 	'AUTH_KEY' => '&*!^#&!@*#(@!SYNCL.A76T^&!*~@*_(!)J@KL!:JH!)SA*(HDSAHD&*(*(E^!EKJH',
 	'TOKEN_ON' => true,
 	'TOKEN_NAME' => '__hash__',
@@ -39,12 +41,6 @@ return array(
 	'TMPL_ACTION_SUCCESS' => '../../Common/View/success',
     'THEME_PATH'        =>  '/Application/Member/View/',
 	'URL_HTML_SUFFIX' => '',
-
-	// 'TMPL_EXCEPTION_FILE' => './404.html',
- //    'ERROR_PAGE'      => './404.html',//错误页面 
-
-	'PAGE_LISTROWS' => 15,
-	'VAR_PAGE' => 'p',
 	'SHOW_PAGE_TRACE' =>true,
 	/*权限验证设置*/
 	'AUTH_CONFIG' => array(
@@ -87,38 +83,5 @@ return array(
     'MAIL_HOST_ADDRESS' => 'smtp.163.com',
     'MAIL_PASSWORD' => 'adoceans16',
     'MAIL_USERNAME' => 'adoceans1688@163.com',
-    #基本信息
-    'HOST_MAIN'     =>  'http://diamond',//主机地址
-    'SYSTEM_TITLE'  =>  '后台系统',
-	'ORDER_STATUS'	=>	array(
-		0	=>	'未付款',
-		1	=>	'已付款',
-		2	=>	'交易成功',
-		3	=>	'无效'
-	),
-	'ORDER_TYPES'	=>	array(
-		1	=>	'成品',
-		2	=>	'裸钻',
-		3	=>	'定制'
-	),
-	'INCH'			=>	array(7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28),
-	'KTYPE'			=>	array(
-		1	=>	'Au750',
-		2	=>	'Pt950',
-		3	=>	'Pd950'
-	),
-	'DTYPE'			=>  array(
-		1	=>	'国检',
-		2	=>	'南京国检',
-		3	=>	'广东省检',
-		4	=>	'武汉地大',
-	),
-	'XZKT'	=>	1,
-	'PAY_METHOD'	=>	array(
-		1	=>	'支付宝',
-		2	=>	'微信',
-		3	=>	'银联',
-		4	=>	'现金',
-		5	=>	'刷卡'
-		)
+
 );

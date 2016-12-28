@@ -5,7 +5,7 @@ return array(
     		"button"=>
     			array(
     				array('type'=>'click','name'=>'点击测试','key'=>'MENU_KEY_NEWS'),
-    				array('type'=>'view','name'=>'url跳转测试','url'=>'http://www.baidu.com'),
+    				array('type'=>'view','name'=>'微信网页测试','url'=>'http://woxuewangs.com'),
     				array('type'=>'scancode_push','name'=>'扫码测试','key'=>'sss')
     				)	
 		),

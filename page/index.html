@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	    <meta charset="UTF-8">
+	    <title>test</title>
+	    <link rel="stylesheet" type="text/css" href="./assets/plugin/bootstrap/css/bootstrap.min.css">
+	    <script src="./assets/plugin/vue-dev/dist/vue.min.js"></script>
+	</head>
+	<body>
+		<div class="container p-10" id="app">
+
+			<div class="col-md-6">
+	            <h1>文字输出</h1>
+				            <div>{{message}}</div>
+				    <input type="text" v-model="message" class="form-control">
+        	</div>
+        	<div class="col-md-6">
+        		<h1>多选下拉框</h1>
+        		<select v-model="selected" multiple class="form-control">
+				  <option >A</option>
+				  <option selected>B</option>
+				  <option>C</option>
+				</select>
+				<br>
+				<span>当前选中: {{ selected | json }}</span>
+        	</div>
+	        <div class="col-md-6">
+	        	 <h1>列表循环遍历</h1>
+	        	 <ul>
+	        	 	<li v-for="todo in todos">
+	        	 		<a v-bind:href="url">{{ message }} - {{ todo.title }}</a>
+	        	 	</li>
+	        	 </ul>
+	        	 <button class='btn btn-sm btn-info' type="button" v-on:click="addaList">新增一行</button>
+	        	 <button class='btn btn-sm btn-danger' type="button" v-on:click="delaList">删除一行</button>
+	        </div>
+	        <div class="col-md-6">
+	        	<h1>if使用</h1>
+	        	<template v-if="Math.random() > 0.5">
+	        		随即值大于0.5
+	        	</template>
+	        	<template v-else>
+	        		随机值不大于0.5
+	        	</template>
+	        </div>
+	        <div class="col-md-6">
+	        	<h1>过滤器</h1>
+	      		<p>{{ test|upercase}}</p>
+	        </div>
+	        <div class="col-md-6">
+	        	  <h1>列表组件</h1>
+	        	  <ol>
+	        	  <todo-item v-for="item in todos" v-bind:todo="item"></todo-item>
+	        	  </ol>
+	        </div>
+	        <button class="btn btn-sm btn-danger" type="button" v-on:click="destoryIt">销毁</button>
+        </div>
+
+	</body>
+	    <script src='./index.js'></script>
+</html>

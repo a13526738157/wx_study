@@ -1,0 +1,60 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/bin/node', '/usr/local/bin/npm', 'install', 'vue' ]
+2 info using npm@2.15.9
+3 info using node@v4.6.1
+4 verbose install initial load of /Applications/MAMP/htdocs/wx_study/page/package.json
+5 verbose readDependencies loading dependencies from /Applications/MAMP/htdocs/wx_study/page/package.json
+6 silly cache add args [ 'vue', null ]
+7 verbose cache add spec vue
+8 silly cache add parsed spec Result {
+8 silly cache add   raw: 'vue',
+8 silly cache add   scope: null,
+8 silly cache add   name: 'vue',
+8 silly cache add   rawSpec: '',
+8 silly cache add   spec: 'latest',
+8 silly cache add   type: 'tag' }
+9 silly addNamed vue@latest
+10 verbose addNamed "latest" is being treated as a dist-tag for vue
+11 info addNameTag [ 'vue', 'latest' ]
+12 silly mapToRegistry name vue
+13 silly mapToRegistry using default registry
+14 silly mapToRegistry registry https://registry.npmjs.org/
+15 silly mapToRegistry data Result {
+15 silly mapToRegistry   raw: 'vue',
+15 silly mapToRegistry   scope: null,
+15 silly mapToRegistry   name: 'vue',
+15 silly mapToRegistry   rawSpec: '',
+15 silly mapToRegistry   spec: 'latest',
+15 silly mapToRegistry   type: 'tag' }
+16 silly mapToRegistry uri https://registry.npmjs.org/vue
+17 verbose addNameTag registry:https://registry.npmjs.org/vue not in flight; fetching
+18 verbose request uri https://registry.npmjs.org/vue
+19 verbose request no auth needed
+20 info attempt registry request try #1 at 21:37:57
+21 verbose request id 05b028b97264cbe6
+22 http request GET https://registry.npmjs.org/vue
+23 info retry will retry, error on last attempt: Error: getaddrinfo ENOTFOUND registry.npmjs.org registry.npmjs.org:443
+24 info attempt registry request try #2 at 21:38:37
+25 http request GET https://registry.npmjs.org/vue
+26 info retry will retry, error on last attempt: Error: getaddrinfo ENOTFOUND registry.npmjs.org registry.npmjs.org:443
+27 info attempt registry request try #3 at 21:40:07
+28 http request GET https://registry.npmjs.org/vue
+29 verbose stack Error: getaddrinfo ENOTFOUND registry.npmjs.org registry.npmjs.org:443
+29 verbose stack     at errnoException (dns.js:27:10)
+29 verbose stack     at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:78:26)
+30 verbose cwd /Applications/MAMP/htdocs/wx_study/page
+31 error Darwin 16.0.0
+32 error argv "/usr/local/bin/node" "/usr/local/bin/npm" "install" "vue"
+33 error node v4.6.1
+34 error npm  v2.15.9
+35 error code ENOTFOUND
+36 error errno ENOTFOUND
+37 error syscall getaddrinfo
+38 error network getaddrinfo ENOTFOUND registry.npmjs.org registry.npmjs.org:443
+38 error network This is most likely not a problem with npm itself
+38 error network and is related to network connectivity.
+38 error network In most cases you are behind a proxy or have bad network settings.
+38 error network
+38 error network If you are behind a proxy, please make sure that the
+38 error network 'proxy' config is set properly.  See: 'npm help config'
+39 verbose exit [ 1, true ]
