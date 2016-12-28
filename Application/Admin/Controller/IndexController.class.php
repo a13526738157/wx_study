@@ -5,6 +5,7 @@ use Org\Wechat\wechat;
 class IndexController extends Controller
 {
     public function _initialize(){
+    	die;
 			$options = C('WX_OPTIONS');
 			$this->weObj = new Wechat($options);
 			$this->bulid_menu();

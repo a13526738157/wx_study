@@ -25,6 +25,8 @@ return array(
         'ht'  => 'Admin',  // admin.domain1.com域名指向Admin模块
         'wx.woxuewangs.com'	=>	'Wx',
         'woxuewangs.com'	=>	'Home',
+        'www.woxuewangs.com'	=>	'Home',
+        'test'   => 'Wx',  // test.domain2.com域名指向Test模块
     ),
 	'AUTH_KEY' => '&*!^#&!@*#(@!SYNCL.A76T^&!*~@*_(!)J@KL!:JH!)SA*(HDSAHD&*(*(E^!EKJH',
 	'TOKEN_ON' => true,
