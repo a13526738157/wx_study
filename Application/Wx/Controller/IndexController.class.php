@@ -129,6 +129,7 @@ class IndexController extends Controller
 	//注册用户
 	private function _regUser($userinfo){
 		$openid = $userinfo['openid'];
+		$this->_log($userinfo['nickname'].'正在注册');
 
 		$user = M('users')->where(array('openid'=>$openid))->find();
 		if($user){
