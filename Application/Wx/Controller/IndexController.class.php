@@ -18,7 +18,6 @@ class IndexController extends Controller
 	public function index(){
 		//获取回复类型
 		$type = $this->weObj->getRev()->getRevType();
-		M('test')->add(array('content'=>'消息类型：'.$type));
 		$content = $this->weObj->getRevData();		
 		switch($type) {
 			//消息回复
@@ -52,7 +51,8 @@ class IndexController extends Controller
 	    $menu = $weObj->getMenu();
 	    //设置菜单
 	    $newmenu =  C('WX_MENU');
-	   	$result = $weObj->createMenu($newmenu);
+	    $result = $weObj->addconditionalMenu($newmenu);
+	   	//$result = $weObj->createMenu($newmenu);
 	}
 	//消息处理
 	private function _msg(){
