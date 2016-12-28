@@ -87,10 +87,10 @@ class IndexController extends Controller
 				switch ($event['key']) {
 					case 'quickAdd':
 						$r = $this->_regUser($userinfo);
-						if($r['code'] == 1){
+						if($r['code'] == 2){
 								$text = '您已经是我们的会员：'.$userinfo['nickname'];
 								$this->weObj->text($text)->reply();
-							}elseif($r['code'] == 2){
+							}elseif($r['code'] == 1){
 								$text = '欢迎加入我们：'.$nickname."\n";
 								$text .= '您的账号为：'.$r['username']."\n";
 								$text .= '登陆密码和支付密码为：'.$r['username']."\n";
@@ -107,10 +107,10 @@ class IndexController extends Controller
 				$this->_log($userinfo['nickname'].'关注了账号');
 
 				$r = $this->_regUser($userinfo);
-				if($r['code'] == 1){
+				if($r['code'] == 2){
 					$text = '欢迎回来：'.$userinfo['nickname'];
 					$this->weObj->text($text)->reply();
-				}elseif($r['code'] == 2){
+				}elseif($r['code'] == 1){
 					$text = '欢迎加入我们：'.$nickname."\n";
 					$text .= '您的账号为：'.$r['username']."\n";
 					$text .= '登陆密码和支付密码为：'.$r['username']."\n";
@@ -141,11 +141,12 @@ class IndexController extends Controller
 		$data = array();
 		$data['username'] = 'wx_'+time();
 		$data['nicename'] = $userinfo['nickname'];
-		//$data['regtime'] = time();
-		//$data['regip'] = get_client_ip();
-		//$data['password'] = md5($pwd);
-		//$data['pay_passwrod'] = md5($pwd);
-		//$data['headImgUrl'] = $userinfo['headImgUrl'];
+		$data['regtime'] = time();
+		$data['openid'] = $openid;
+		$data['regip'] = get_client_ip();
+		$data['password'] = md5($pwd);
+		$data['pay_passwrod'] = md5($pwd);
+		$data['headImgUrl'] = $userinfo['headImgUrl'];
 		M('users')->add($data);
 
 		$return['code'] = 1;//注册
