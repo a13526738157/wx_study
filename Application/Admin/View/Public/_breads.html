@@ -1,0 +1,14 @@
+
+<!--             <div class="tpl-content-page-title">
+                微Admin -- {$init.title}
+            </div> -->
+            <ol class="am-breadcrumb am-breadcrumb-slash">
+                <li><a href="{:U('index/index')}" class="am-icon-home">首页</a></li>
+            	<volist name="breads" id="vo">
+            		<if condition="$vo['key'] eq $init['key']">
+		                <li class="am-active">{$vo.title}</li>
+            		<else/>
+            		<li><a href="{$vo.url}">{$vo.title}</a></li>
+            		</if>
+            	</volist>
+            </ol>

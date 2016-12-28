@@ -119,10 +119,6 @@ class IndexController extends Controller
 				break;
 		}		
 	}
-	protected function _log($content,$tableName = 'actionlog'){
-		$userinfo = $this->userinfo;
-		M($tableName)->add(array('content'=>$content,'user'=>$userinfo['nickname']));
-	}
 	//注册用户
 	protected function _regUser($userinfo){
 		$openid = $userinfo['openid'];
@@ -147,6 +143,12 @@ class IndexController extends Controller
 
 		$return['code'] = 1;//注册
 		$return['username'] = $data['username'];
+		$this->_log('新用户注册-用户名:'.$data['username']);
 		return $return;
+	}
+	//记录日志
+	protected function _log($content,$tableName = 'actionlog'){
+		$userinfo = $this->userinfo;
+		M($tableName)->add(array('content'=>$content,'user'=>$userinfo['nickname']));
 	}
 }

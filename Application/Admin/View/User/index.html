@@ -1,0 +1,125 @@
+<include file="Public:header"/>
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+
+            <div class="row-content am-cf">
+                <div class="row">
+            <include file="Public:_breads"/>
+
+                </div>
+                <div class="row">
+
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title  am-cf">{$init.title}</div>
+
+<!--                                 <form class="am-form am-form-horizontal" onsubmit="return false">
+                                    <div class="widget-title am-fl">
+                                        订阅状态：
+                                        <select  data-am-selected class="subscribe">
+                                            <volist name="subscribe" id="vo">
+                                                <option value="{$key}" {:$key==1?'selected':''}>{$vo}</option>
+                                            </volist>
+                                        </select>
+                                    </div>
+                                    <div class="widget-function am-fr">
+                                        <div class="am-u-sm-7 am-u-sm-offset-2">
+                                        <input class="tpl-form-input key_words" type="text" placeholder="昵称/用户账号" />
+                                        </div>
+                                        <div class="am-u-sm-3">
+                                        <button class="am-btn am-btn-md am-btn-primary key_search" type="button">
+                                        <i class="am-icon-search"></i>
+                                        搜索</button>   
+                                        </div>
+                                    </div>
+
+                                </form> -->
+                            </div>
+                            <div class="widget-body am-fr">
+                            <div class="row">
+                                <div class="am-u-sm-12 am-u-md-12 am-u-lg-1">
+                                    <div class="am-form-group tpl-table-list-select">
+                                        <select  data-am-selected="{btnSize: 'sm'}" class="subscribe" style="display: none">
+                                            <volist name="subscribe" id="vo">
+                                                <option value="{$key}" {:$key==1?'selected':''}>{$vo}</option>
+                                            </volist>
+                                        </select> 
+                                    </div>
+                                </div>
+                                <div class="am-u-sm-12 am-u-md-12 am-u-lg-3">
+                                    <div class="am-input-group am-input-group-sm tpl-form-border-form cl-p">
+                                        <input type="text" class="am-form-field key_words" placeholder="账号/昵称">
+                                        <span class="am-input-group-btn">
+                                        <button class="am-btn  am-btn-default am-btn-success tpl-table-list-field am-icon-search key_search" type="button"></button>
+                                      </span>
+                                    </div>
+                                </div> 
+                            </div> 
+                            <div class="row">
+                                <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                                    <table width="100%" class="am-table am-table-compact am-table-striped tpl-table-black " id="dataTable">
+                                        <thead>
+                                            <tr>
+                                                <th>序号</th>
+                                                <th>用户账号</th>
+                                                <th>昵称</th>
+                                                <th>注册时间</th>
+                                                <th>订阅状态</th>
+                                                <th>操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                </div>
+
+            </div>
+        </div>
+<script>
+    var Page;
+    Page = {
+        subscribe:$('.subscribe').val(),
+        keywords:'',
+        datas: {
+                subscribe: function(){
+                    return Page.subscribe
+                },
+                keywords: function(){
+                    return Page.keywords
+                }
+            },
+        _url:"{:U(CONTROLLER_NAME.'/'.ACTION_NAME,array('do'=>'listTable'))}",    
+        init:function(){
+            this.bind()
+            this.renderTableX()
+        },
+        bind:function(){
+            var _this = this;
+            $(document).on('change','.subscribe',function(){
+                _this.subscribe = $(this).val();
+                _this.renderTableX();
+            })
+            $(document).on('click','.key_search',function(){
+                _this.keywords = $('.key_words').val();
+                _this.renderTableX();
+            })
+        },
+        renderTableX:function(){
+            var _this = this;
+            Base.renderTable('#dataTable',_this._url,_this.datas);
+
+        }
+    }
+    $(function(){
+        Page.init();
+    })
+</script>        
+<include file="Public:footer"/>
