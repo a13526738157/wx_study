@@ -14,16 +14,6 @@ class IndexController extends Controller
 			$this->weObj = new TPWechat($options);
 			$this->weObj->valid();
 			$this->bulid_menu();
-			//获取accessToken
-			// $accessArr = F('accessToken');
-
-			// if(!$accessArr['accessToken']||$accessArr['time']<time()){
-			// 	$accessArr['accessToken'] = $this->weObj->getOauthAccessToken();
-			// 	$this->_log(json_encode($accessArr));
-			// 	$accessArr['time'] = time()+7100;
-			// 	F('accessToken',$accessArr);
-			// }
-
 	}
 	public function index(){
 		//获取回复类型

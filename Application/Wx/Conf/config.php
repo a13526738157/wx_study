@@ -6,7 +6,13 @@ return array(
     			array(
     				array('type'=>'click','name'=>'加入会员','key'=>'quickAdd'),
     				array('type'=>'view','name'=>'微官网','url'=>'http://woxuewangs.com'),
-    				array('type'=>'scancode_push','name'=>'扫码测试','key'=>'sss')
+    				array(
+                        'name'=>'更多功能',
+                        'sub_button'    =>  array(
+                            array('type'  =>  'pic_sysphoto','name'  =>  '系统拍照','key'   =>  'selectImg'),
+                            array('type'  =>  'pic_photo_or_album','name'   =>  '选取相册','key'=>'photos')
+                        )
+                    )
     				)	
 		),
 	//基本配置
