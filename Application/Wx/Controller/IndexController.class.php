@@ -29,10 +29,10 @@ class IndexController extends Controller
 		//获取回复类型
 		$type = $this->weObj->getRev()->getRevType();
 		M('test')->add(array('content'=>'消息类型：'.$type));
+		$content = $this->weObj->getRevData();		
 		switch($type) {
 			//消息回复
 			case Wechat::MSGTYPE_TEXT:
-					$content = $this->weObj->getRevData();
 					$content = $content['Content'];
 					switch ($content) {
 						case '你好':
@@ -46,7 +46,7 @@ class IndexController extends Controller
 					break;
 			//事件监听
 			case Wechat::MSGTYPE_EVENT:
-					$this->_event();
+					$this->_event($content);
 					break;
 			case Wechat::MSGTYPE_IMAGE:
 					break;		
@@ -69,20 +69,25 @@ class IndexController extends Controller
 
 	}
 	//事件处理
-	private function _event(){
+	private function _event($data){
 		//事件监听
 		$event = $this->weObj->getRevEvent();
 		$this->_log('监听事件: 事件名称 ['.$event['event'].']');
+		//获取发送信息
+		$openid = $content['FromUserName'];
 		switch ($event['event']) {
 			case Wechat::EVENT_LOCATION:
 				$place = $this->weObj->getRevEventGeo();//获取事件上报地址
-
 				$this->_log('上报地址 x:'.$place['x'].' y:'.$place['y'].' 更多:'.$place['precision']);
-				$this->weObj->text('上报地理位置成功 x:'.$place['x'].' y:'.$place['y'])->reply();
+				$userinfo = $this->weObj->getUserInfo($openid);
+
+				$this->weObj->text($userinfo['nickname'].'上报地理位置成功 x:'.$place['x'].' y:'.$place['y'])->reply();
 				break;
 			case Wechat::EVENT_MENU_CLICK:
 				$this->weObj->text('您触发了点击事件')->reply();
-				break;	
+				break;
+			case Wechat::EVENT_SUBSCRIBE:
+				//$this->weObj->		
 			default:
 				//$this->weObj->text('更多事件')->reply();
 				break;
