@@ -91,9 +91,9 @@ class IndexController extends Controller
 								$text = '您已经是我们的会员：'.$userinfo['nickname'];
 								$this->weObj->text($text)->reply();
 							}elseif($r['code'] == 1){
-								$text = '欢迎加入我们：'.$nickname."\n";
+								$text = '欢迎加入我们：'.$userinfo['nickname']."\n";
 								$text .= '您的账号为：'.$r['username']."\n";
-								$text .= '登陆密码和支付密码为：'.$r['username']."\n";
+								$text .= '登陆密码和支付密码为：'.$r['pwd']."\n";
 								$this->weObj->text($text)->reply();
 							}	
 						break;		
@@ -111,9 +111,9 @@ class IndexController extends Controller
 					$text = '欢迎回来：'.$userinfo['nickname'];
 					$this->weObj->text($text)->reply();
 				}elseif($r['code'] == 1){
-					$text = '欢迎加入我们：'.$nickname."\n";
+					$text = '欢迎加入我们：'.$userinfo['nickname']."\n";
 					$text .= '您的账号为：'.$r['username']."\n";
-					$text .= '登陆密码和支付密码为：'.$r['username']."\n";
+					$text .= '登陆密码和支付密码为：'.$r['pwd']."\n";
 					$this->weObj->text($text)->reply();
 				}		
 				break;
@@ -139,7 +139,7 @@ class IndexController extends Controller
 		$pwd = '000000';
 		$return['pwd'] = $pwd;
 		$data = array();
-		$data['username'] = 'wx_'+time();
+		$data['username'] = 'wx_'.time();
 		$data['nicename'] = $userinfo['nickname'];
 		$data['regtime'] = time();
 		$data['openid'] = $openid;
