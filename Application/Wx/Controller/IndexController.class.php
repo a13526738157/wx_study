@@ -145,7 +145,7 @@ class IndexController extends Controller
 		$data['openid'] = $openid;
 		$data['regip'] = get_client_ip();
 		$data['password'] = md5($pwd);
-		$data['pay_passwrod'] = md5($pwd);
+		$data['pay_password'] = md5($pwd);
 		$data['headImgUrl'] = $userinfo['headImgUrl'];
 		M('users')->add($data);
 
