@@ -14,7 +14,7 @@ class IndexController extends Controller
 			$this->weObj = new TPWechat($options);
 			$this->weObj->valid();
 			$is_menu = M('sysConfig')->where(array('name'=>'menu'))->find();
-			if($is_menu['value']){
+			if($is_menu['val']){
 				$this->bulid_menu();
 			}
 	}
@@ -63,6 +63,7 @@ class IndexController extends Controller
 	    $newmenu =  C('WX_MENU');
 	    //$result = $weObj->addconditionalMenu($newmenu);
 	   	$result = $weObj->createMenu($newmenu);
+	   	M('sysConfig')->where(array('name'=>'menu'))->setField(array('val'=>0));
 	}
 	//事件处理
 	protected function _event($data){
