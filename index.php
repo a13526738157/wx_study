@@ -30,7 +30,7 @@ ini_set('session.gc_maxlifetime', 3600); //设置时间
 ini_get('session.gc_maxlifetime');//得到ini中设定值
 
 // 引入ThinkPHP入口文件
-//require './ThinkPHP/Library/Vendor/Qiniu/autoload.php';
+require './ThinkPHP/Library/Vendor/Qiniu/autoload.php';
 
 require './ThinkPHP/ThinkPHP.php';
 // 亲^_^ 后面不需要任何代码了 就是如此简单

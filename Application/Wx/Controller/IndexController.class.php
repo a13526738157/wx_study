@@ -2,7 +2,7 @@
 namespace Wx\Controller;
 use Think\Controller;
 use Org\Wechat\wechat;
-use Org\Net\IpLocation;
+use Org\Net\Thinkphp\TPWechat;
 /**
 *微信服务接受
 *
@@ -11,7 +11,7 @@ class IndexController extends Controller
 {
     public function _initialize(){
 			$options = C('WX_OPTIONS');
-			$this->weObj = new Wechat($options);
+			$this->weObj = new TPWechat($options);
 			$this->weObj->valid();
 			$this->bulid_menu();
 			//获取accessToken
@@ -32,7 +32,7 @@ class IndexController extends Controller
 		$content = $this->weObj->getRevData();		
 		switch($type) {
 			//消息回复
-			case Wechat::MSGTYPE_TEXT:
+			case TPWechat::MSGTYPE_TEXT:
 					$content = $content['Content'];
 					switch ($content) {
 						case '你好':
@@ -45,10 +45,10 @@ class IndexController extends Controller
 					$this->weObj->text($text)->reply();
 					break;
 			//事件监听
-			case Wechat::MSGTYPE_EVENT:
+			case TPWechat::MSGTYPE_EVENT:
 					$this->_event($content);
 					break;
-			case Wechat::MSGTYPE_IMAGE:
+			case TPWechat::MSGTYPE_IMAGE:
 					break;		
 			default:
 					$this->weObj->text("help info")->reply();
@@ -77,13 +77,11 @@ class IndexController extends Controller
 		$openid = $data['FromUserName'];
 		$userinfo = $this->weObj->getUserInfo($openid);//用户信息		
 		switch ($event['event']) {
-			case Wechat::EVENT_LOCATION:
+			case TPWechat::EVENT_LOCATION:
 				$place = $this->weObj->getRevEventGeo();//获取事件上报地址
 				$this->_log('上报地址 x:'.$place['x'].' y:'.$place['y'].' 更多:'.$place['precision']);
-				$this->_log('openid'.$openid.'获取用户信息:'.serialize($userinfo));
-				//$this->weObj->text($userinfo['nickname'].'上报地理位置成功 x:'.$place['x'].' y:'.$place['y'])->reply();
 				break;
-			case Wechat::EVENT_MENU_CLICK:
+			case TPWechat::EVENT_MENU_CLICK:
 				switch ($event['key']) {
 					case 'quickAdd':
 						$r = $this->_regUser($userinfo);
@@ -103,7 +101,7 @@ class IndexController extends Controller
 						break;
 				}
 				break;
-			case Wechat::EVENT_SUBSCRIBE://订阅
+			case TPWechat::EVENT_SUBSCRIBE://订阅
 				$this->_log($userinfo['nickname'].'关注了账号');
 
 				$r = $this->_regUser($userinfo);
@@ -134,7 +132,6 @@ class IndexController extends Controller
 			$return['code'] = 2;//已拥有账号
 			return $return;
 		}
-
 		//判断用户是否登陆
 		$pwd = '000000';
 		$return['pwd'] = $pwd;

@@ -1,21 +1,19 @@
 <?php
 use Qiniu\Auth;
 use Qiniu\Storage\BucketManager;
-/**
- * @Author: Sincez
- * @Date:   2016-06-01 16:00:02
- * @Last Modified by:   Sincez
- * @Last Modified time: 2016-12-02 14:17:39
- */
 
 function getQiniuToken(){
-    $accessKey = 'XNwUQv0UnzXmDBDytakQYer_DhDM-vbeZW-sdufe';
-    $secretKey = 'zfowh__jmZNC5yT2MC9ST5bFSKIg1ICZxNRLGlwy';
+    $accessKey = 'ZZjGMV5DHn3sR_MDWaRadxGcVJVnT2Jp4if4iLIH';
+    $secretKey = 'Qf95g-GGItXjxAYrCJXziH6CaIWeMvDiB7Xa2-yY';
     $auth = new Auth($accessKey, $secretKey);
     $token = $auth->uploadToken('dsp-pic');
     return $token;
 }
-
+function uploadQiniu($filename){
+	$token = getQiniuToken();
+	//$filePath =$filename;
+	//$uploadName = time()
+}
 function delQiniuOnePic($pic_name){
     $accessKey = 'XNwUQv0UnzXmDBDytakQYer_DhDM-vbeZW-sdufe';
     $secretKey = 'zfowh__jmZNC5yT2MC9ST5bFSKIg1ICZxNRLGlwy';
@@ -64,32 +62,6 @@ function create_Url($url, $info, $appUrl = '', $attr =''){
       $dizhi = "<a href='{$u}' {$attr}>$info</a>";
       return $dizhi;
     }
-}
-
-function checked($str, $item, $c = false) {
-	if (empty($str)) {
-		return '';
-	}
-	$ary = explode(',', $str);
-	$isIn = in_array($item, $ary);
-	if ($isIn) {
-		if ($c) {
-			return 'selected';
-		} else {
-			return 'checked';
-		}
-	}
-	return '';
-}
-/**
- * 序号生成
- * @param  int $i 当前页的第几条
- * @return int    生成序号
- */
-function getChange($i){
-    $page = $_GET['p']>0 ? $_GET['p'] : 1;
-    $z = ($page - 1) * C("PAGE_LISTROWS") + $i;
-    return $z;
 }
 
 /**
@@ -147,23 +119,6 @@ function array_sort($arr, $keys, $type = 'asc') {
         $new_array[$k] = $arr[$k];
     }
     return $new_array;
-}
-
-/**
- * 获取客户机IP
- * @param  boolean $isstr TRUE 或者 FALSE
- * @return          ip或者转换后的纯数字
- */
-function get_Ip($isstr = false) {
-    $ip = getenv('REMOTE_ADDR');
-    $cIP1 = getenv('HTTP_X_FORWARDED_FOR');
-    $cIP2 = getenv('HTTP_CLIENT_IP');
-    $cIP1 ? $ip = $cIP1 : null;
-    $cIP2 ? $ip = $cIP2 : null;
-    if (empty($isstr)) {
-        $ip = ip2long($ip);
-    }
-    return $ip;
 }
 function array_getcol($data, $col = 'id') {
 	$func = create_function('$v', 'return $v[\'' . $col . '\'];');
@@ -336,43 +291,6 @@ function getip() {
 	return $clientip;
 }
 
-/**
- * 权限验证
- * @param rule string|array  需要验证的规则列表,支持逗号分隔的权限规则或索引数组
- * @param uid  int           认证用户的id
- * @param string mode        执行check的模式
- * @param relation string    如果为 'or' 表示满足任一条规则即通过验证;如果为 'and'则表示需满足所有规则才能通过验证
- * @return boolean           通过验证返回true;失败返回false
- * @return author            黄药师		46914685@qq.com
- */
-function authCheck($rule, $uid, $type = 1, $mode = 'url', $relation = 'or') {
-	// echo $rule;die;
-	// return true;
-	//超级管理员跳过验证
-	$auth = new \Think\Auth();
-    $uid = $uid ? $uid : session('userinfo.uid');
-	if (in_array($uid, C('ADMINISTRATOR'))) {
-		return true;
-	} else {
-		return $auth->check($rule, $uid, $type, $mode, $relation) ? true : false;
-	}
-}
-
-function getLeftmenu() {
-	$menus = M('leftmenu')->order('if(ord=0,99999,ord),id asc')->select();
-	foreach ($menus as $v) {
-		if (!authCheck($v['name'], session('uid')))
-			continue;
-		$m[$v['mid']]['name'] = $v['moduleName'];
-		if ($v['is_first']) {
-			$m[$v['mid']]['url'] = $v['name'];
-		} else {
-			$m[$v['mid']]['items'][] = $v;
-		}
-	}
-	return $m;
-}
-
 function tohourday($str, $day, $start, $end) {
 	$array = str_split($str);
 	if ($day == $start) {
@@ -413,16 +331,6 @@ function tohourday($str, $day, $start, $end) {
 	}
 	return trim($hour, ',');
 }
-
-function strtostr($str, $str2) {
-	$strs = array_filter(explode(',', $str));
-	$cstr = '';
-	foreach ($strs as $c) {
-		$cstr.=($str2[$c] . ',');
-	}
-	return trim($cstr, ',');
-}
-
 /**
  * 获取当前页面完整URL地址
  */
@@ -433,68 +341,6 @@ function get_url() {
 	$relate_url = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : $php_self . (isset($_SERVER['QUERY_STRING']) ? '?' . $_SERVER['QUERY_STRING'] : $path_info);
 	return $relate_url;
 	//return $sys_protocal . (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '') . $relate_url;
-}
-
-/**
- * 调用通用Model
- */
-function MC($name = '', $tablePrefix = '', $connection = '') {
-	return M("Admin\Model\CommonModel:$name", $tablePrefix, $connection);
-}
-
-function getCode($index,$value){
-	$ary = explode('_',$value);
-	return $ary[$index];
-}
-
-function getParentCode($index,$value){
-	if($index==0){
-		return $index;
-	}
-	$ary = explode('_',$value);
-	return $ary[$index-1];
-}
-
-function changeData($rows){
-    foreach($rows as $key1=>$rows1){
-        $did = 0;
-        foreach($rows1['data']['imp'] as $k=>$v){
-            $did = $v['breakdowns']['placement'];
-            $day = '';
-            $day = date('Y-m-d',strtotime($v['time']));
-            // $data[0][] = array($day,$did,$v['value']);
-            $cur[$day][$rows1['app_id'].'_'.$did.'_'.$rows1['app']]['impression'] = $v['value'];
-            // $M->where(array('did'=>$did,'day'=>$day))->save(array('impression'=>$v['value']));
-        }
-
-        foreach($rows1['data']['click'] as $k=>$v){
-            $did = $v['breakdowns']['placement'];
-            $day = '';
-            $day = date('Y-m-d',strtotime($v['time']));
-
-            $cur[$day][$rows1['app_id'].'_'.$did.'_'.$rows1['app']]['click'] = $v['value'];
-            // $data[0][] = array($day,$did,$v);
-            // $M->where(array('did'=>$did,'day'=>$day))->save(array('click'=>$v['value']));
-        }
-
-        foreach($rows1['data']['revenue'] as $k=>$v){
-            $did = $v['breakdowns']['placement'];
-            $day = '';
-            $day = date('Y-m-d',strtotime($v['time']));
-            $cur[$day][$rows1['app_id'].'_'.$did.'_'.$rows1['app']]['income'] = $v['value'];
-
-            // $M->where(array('did'=>$did,'day'=>$day))->save(array('income'=>$v['value']));
-        }
-    }
-    // print_r($cur);die;
-    foreach($cur as $k=>$v){
-    	foreach($v as $kk=>$vv){
-    		$data[0][] = array($k,$kk,$vv['impression']*1,$vv['click']*1,$vv['income']*1);
-    	}
-    	
-    }
-    return $data;
-    // print_r($data);die;
 }
 
 /**
@@ -533,277 +379,6 @@ function md_scan_dir($pattern,$flags=null)
 }
 
 
-/**
- * 生成th头
- * @param array $row
- * @param string $temp_tpl
- * @return string
- */
-function create_th(array $row, $temp_tpl='')
-{
-	$str = '';
-	$temp_tpl = $temp_tpl?$temp_tpl:"<th class='\$class' style='\$style' \$string>\$title</th>";
-	foreach($row as $k=>$v){
-		$temp_th = '';
-		$temp_th = str_replace('$class',$v['class'],$temp_tpl);
-		$temp_th = str_replace('$string',$v['string'],$temp_th);
-		$temp_th = str_replace('$style',$v['style'],$temp_th);
-		$temp_th = str_replace('$title',$v['title'],$temp_th);
-		$str .= $temp_th;
-	}
-	return $str;
-}
-
-/**
- * 创建目标表单
- * @param array $title_list
- * @param array $data
- * @return string
- */
-function sj_get_detail(array $title_list, array $data)
-{
-	//TODO：后期更改为可选择性模版
-	$tpl = "<div class='form-group'>
-            <label class='col-lg-3 control-label'>\$label</label>
-            <div class='col-lg-5'>
-                <p class='form-control-static'>\$val</p>
-            </div>
-            </div>";
-	$str .= '';
-	foreach($title_list as $k=>$v)
-	{
-		$temp_tpl = '';
-		switch($v['type']){
-			case 'inline':
-				//sj_get_detail_inline($k,$v,$data);
-				#对键名进行拆分判断有几个值
-				$fields_key = explode(',',$k);
-				$fields = explode(',',$v['field']);
-				$label = join('、',$fields);
-				if(isset($v['function']))
-				{
-					$temp_label = '';
-					if(is_array($v['function']))
-					{
-						foreach($fields_key as $k1=>$v1)
-						{
-							call_user_func($v['function'][$k1],$v1);
-							$temp_label .= '<span>'.$fields[$k1].'</span>';
-						}
-					}else
-					{
-						foreach($fields_key as $k1=>$v1)
-						{
-							if(!empty($temp_label)){
-								$temp_label .= '&nbsp;&nbsp;';
-							}
-							$data[$v1] = call_user_func($v['function'],$data[$v1]);
-							$temp_label .= $data[$v1];
-						}
-					}
-				}else
-				{
-					foreach($fields_key as $k1=>$v1)
-					{
-						if(!empty($temp_label)){
-							$temp_label .= '&nbsp;&nbsp;';
-						}
-						$temp_label .= $data[$v1];
-					}
-				}
-				if($temp_label||$label)
-				{
-					//TODO:后期可添加模板根据模板写
-					$temp_tpl = str_replace('$label', $label.':', $tpl);
-					$temp_tpl = str_replace('$val',$temp_label, $temp_tpl);
-					$str .= $temp_tpl;
-				}
-				break;
-			default:#单行表单field只代表一个字段
-				if(isset($v['function']))
-				{
-					$data[$k] = call_user_func($v['function'],$data[$k]);
-				}
-				if($data[$k])
-				{
-					//TODO:后期可添加模板根据模板写
-					$temp_tpl = str_replace('$label', $v['field'].':', $tpl);
-					$temp_tpl = str_replace('$val', $data[$k], $temp_tpl);
-					$str .= $temp_tpl;
-				}
-		}
-
-	}
-	return $str;
-}
-
-function sj_get_detail_inline()
-{
-	//TODO:foreach
-}
-
-/**
- * 获取广告名称
- * @param int $k
- * @return string or false
- */
-function get_brand($k)
-{
-	$name = D('Admin/Brand')->where('id='.$id)->getField('brand_name');
-	return $name;
-}
-
-/**
- * 获取状态
- * @param $k
- * @return mixed
- */
-function get_status($k)
-{
-	$status = C('STATUS');
-	return $status[$k];
-}
-
-/**
- * 获取code对应名称
- * @param $k
- * @return mixed
- */
-function get_code($k)
-{
-	$name = D('Admin/Code')->where('id='.$k)->getField('name');
-	return $name;
-}
-
-/**
- * @param varchar $pid 商品id
- * @param int $uid 用户id
- * @param int $type 商品1成品现货2裸钻3个性定制
- * @return float or bool
- */
-function true_price($pid, $type=1,$uid='')
-{
-	if(empty($uid))
-	{
-		$uid = session('userinfo.uid');
-	}
-	$brand_id = session('userinfo.brand_id');
-	if(empty($brand_id))
-	{
-		return false;
-	}
-
-	#获取该用户销售系数
-	$sale_set = get_sale_set($uid,$brand_id);
-	if(!$sale_set)
-	{
-		return false;
-	}
-
-	#获得商品信息
-	$goods = get_goods($pid,$type);
-	if(!$goods)
-	{
-		return false;
-	}
-	#获得价钱
-	$price  = $goods['price'];
-	// print_r($sale_set);echo $price;die;
-	if($goods[$sale_set['col_name']]==$sale_set['value']){
-		$price = $sale_set['percent']*$price;
-	}
-	return $price;
-}
-
-/**
- * @param $pid
- * @param $type
- * @return bool
- */
-function get_goods($pid, $type)
-{
-	switch($type)
-	{
-		case 1:#成品现货
-			$where['pid'] = $pid;
-
-			$goods = D('Product1')->where($where)->find();
-			break;
-		case 2:
-			$where['did'] = $pid;
-			$goods = D('Diamond1')->where($where)->find();
-			break;
-		default:
-			return false;
-			break;
-
-	}
-	return $goods;
-}
-
-/**
- * @param $uid
- * @param $brand_id
- * @return bool or array
- */
-function get_sale_set($uid, $brand_id)
-{
-	$where['uid'] = $uid;
-	$where['is_default'] = 1;
-	$where['brand_id'] = $brand_id;
-	#获取销售系数
-    $saleSet = D('Admin/Saleset')->where($where)->find();
-	unset($where);
-	$where['a.brand_id'] = $brand_id;
-	$where['a.id'] = $saleSet['cid'];
-	$col_name = D('Admin/Paramsetvalue')
-				->alias('a')
-		        ->field('a.value,b.col_name')
-				->join('__PARAMSET__ as b on a.paramset_id=b.id')
-				->where($where)
-				->find();
-	if($col_name)
-	{
-		$return = $col_name;
-		$return['percent'] = $saleSet['percent'];
-		return $return;
-	}else
-	{
-		return false;
-	}
-
-}
-
-/**
- * @param $price
- * @param $pid
- * @param int $type
- * @param string $sale_set
- * @return mixed
- */
-function trans_price($price, $pid, $type=1, $sale_set='')
-{
-	$uid = session('userinfo.uid');
-	$brand_id = session('userinfo.brand_id');
-	$goods = get_goods($pid,$type);
-	if(!$goods)
-	{
-		return $price;
-	}
-	if($sale_set)
-	{
-
-	}else
-	{
-		$sale_set = get_sale_set($uid,$brand_id);
-	}
-	if($goods[$sale_set['col_name']]==$sale_set['value'])
-	{
-		$price = $sale_set['percent']*$price;
-	}
-
-	return $price;
-}
 
 /**
  * 中文截取字符串
@@ -831,52 +406,26 @@ function substring_zh($str, $len, $salt='...', $en='utf-8'){
 		return $str;
 	}
 }
+//保存图片并返回本地绝对路径,参数远程图片 
+function saveimage($path) {
+    if ($path == '') return false;
+        $url = $path; //远程图片路径
+        if(stripos($url,'http://')!== false or stripos($url,'ftp://')!== false){ //仅处理外部路径
+            $filename = substr($path, strripos($path, '/')); //图片名.后缀
+            $ext = substr($path, strripos($path, '.')); //图片后缀
+            $picdir = './Public/Uploads/'; //组合图片路径
+            $savepath = $picdir . strtotime("now") . $ext; //保存新图片路径
+            ob_start(); //开启缓冲
+            readfile($url); //读取图片
+            $img = ob_get_contents(); //保存到缓冲区
+            ob_end_clean(); //关闭缓冲
+            $fp2 = @fopen($savepath, "a"); //打开本地保存图片文件
+            fwrite($fp2, $img); //写入图片
+            fclose($fp2);
 
-function getArrSet($arrs,$_current_index=-1)
-{
-     //总数组
-     static $_total_arr;
-     //总数组下标计数
-     static $_total_arr_index;
-     //输入的数组长度
-     static $_total_count;
-     //临时拼凑数组
-     static $_temp_arr;
-     
-     //进入输入数组的第一层，清空静态数组，并初始化输入数组长度
-     if($_current_index<0)
-     {
-         $_total_arr=array();
-         $_total_arr_index=0;
-         $_temp_arr=array();
-         $_total_count=count($arrs)-1;
-         getArrSet($arrs,0);
-     }
-     else
-     {
-         //循环第$_current_index层数组
-         foreach($arrs[$_current_index] as $v)
-         {
-             //如果当前的循环的数组少于输入数组长度
-             if($_current_index<$_total_count)
-             {
-                 //将当前数组循环出的值放入临时数组
-                 $_temp_arr[$_current_index]=$v;
-                 //继续循环下一个数组
-                 getArrSet($arrs,$_current_index+1);
-                 
-             }
-             //如果当前的循环的数组等于输入数组长度(这个数组就是最后的数组)
-             else if($_current_index==$_total_count)
-             {
-                 //将当前数组循环出的值放入临时数组
-                 $_temp_arr[$_current_index]=$v;
-                 //将临时数组加入总数组
-                 $_total_arr[$_total_arr_index]=$_temp_arr;
-                 //总数组下标计数+1
-                 $_total_arr_index++;
-           }
-      	}
-    }     
-    return $_total_arr;
+        } else {
+            $savepath = $path; 
+        }
+    
+    return $savepath; //返回本地保存绝对路径
 }
