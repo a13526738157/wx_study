@@ -74,13 +74,13 @@ class IndexController extends Controller
 		$event = $this->weObj->getRevEvent();
 		$this->_log('监听事件: 事件名称 ['.$event['event'].']');
 		//获取发送信息
-		$openid = $content['FromUserName'];
+		$openid = $data['FromUserName'];
 		switch ($event['event']) {
 			case Wechat::EVENT_LOCATION:
 				$place = $this->weObj->getRevEventGeo();//获取事件上报地址
 				$this->_log('上报地址 x:'.$place['x'].' y:'.$place['y'].' 更多:'.$place['precision']);
 				$userinfo = $this->weObj->getUserInfo($openid);
-				$this->_log('获取用户信息:'.serialize($userinfo));
+				$this->_log('openid'.$openid.'获取用户信息:'.serialize($userinfo));
 				$this->weObj->text($userinfo['nickname'].'上报地理位置成功 x:'.$place['x'].' y:'.$place['y'])->reply();
 				break;
 			case Wechat::EVENT_MENU_CLICK:
