@@ -80,7 +80,7 @@ class IndexController extends Controller
 				$place = $this->weObj->getRevEventGeo();//获取事件上报地址
 				$this->_log('上报地址 x:'.$place['x'].' y:'.$place['y'].' 更多:'.$place['precision']);
 				$userinfo = $this->weObj->getUserInfo($openid);
-
+				$this->_log('获取用户信息:'.serialize($userinfo));
 				$this->weObj->text($userinfo['nickname'].'上报地理位置成功 x:'.$place['x'].' y:'.$place['y'])->reply();
 				break;
 			case Wechat::EVENT_MENU_CLICK:
