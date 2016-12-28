@@ -146,7 +146,7 @@ class IndexController extends Controller
 		$data['regip'] = get_client_ip();
 		$data['password'] = md5($pwd);
 		$data['pay_password'] = md5($pwd);
-		$data['headImgUrl'] = $userinfo['headImgUrl'];
+		$data['headImgUrl'] = $userinfo['headimgurl'];
 		M('users')->add($data);
 
 		$return['code'] = 1;//注册
