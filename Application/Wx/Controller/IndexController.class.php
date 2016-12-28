@@ -75,26 +75,60 @@ class IndexController extends Controller
 		$this->_log('监听事件: 事件名称 ['.$event['event'].']');
 		//获取发送信息
 		$openid = $data['FromUserName'];
+		$userinfo = $this->weObj->getUserInfo($openid);//用户信息		
 		switch ($event['event']) {
 			case Wechat::EVENT_LOCATION:
 				$place = $this->weObj->getRevEventGeo();//获取事件上报地址
 				$this->_log('上报地址 x:'.$place['x'].' y:'.$place['y'].' 更多:'.$place['precision']);
-				$userinfo = $this->weObj->getUserInfo($openid);
 				$this->_log('openid'.$openid.'获取用户信息:'.serialize($userinfo));
-				$this->weObj->text($userinfo['nickname'].'上报地理位置成功 x:'.$place['x'].' y:'.$place['y'])->reply();
+				//$this->weObj->text($userinfo['nickname'].'上报地理位置成功 x:'.$place['x'].' y:'.$place['y'])->reply();
 				break;
 			case Wechat::EVENT_MENU_CLICK:
 				$this->weObj->text('您触发了点击事件')->reply();
 				break;
-			case Wechat::EVENT_SUBSCRIBE:
-				//$this->weObj->		
+			case Wechat::EVENT_SUBSCRIBE://订阅
+				$r = $this->_regUser($userinfo);
+				if($r['code'] == 1){
+					$text = '欢迎回来：'.$userinfo['nickname'];
+					$this->weObj->text($text)->reply();
+				}elseif($r['code'] == 2){
+					$text = '欢迎加入我们：'.$nickname."\n";
+					$text .= '您的账号为：'.$r['username']."\n";
+					$text .= '登陆密码和支付密码为：'.$r['username']."\n";
+					$this->weObj->text($text)->reply();
+				}		
+				break;
 			default:
 				//$this->weObj->text('更多事件')->reply();
 				break;
 		}		
 	}
-	private function _log($content){
+	private function _log($content,$tableName = 'test'){
 		$data = $this->weObj->getRevData();
-		M('test')->add(array('content'=>$content,'user'=>$data['FromUserName']));
+		M($tableName)->add(array('content'=>$content,'user'=>$data['FromUserName']));
+	}
+	//注册用户
+	private function _regUser($userinfo){
+		$openid = $userinfo['openid'];
+		$user = M('users')->where(array('openid'=>$openid))->find();
+		if($user){
+			$return['code'] = 2;//已拥有账号
+			return $return;
+		}
+		//判断用户是否登陆
+		$pwd = '000000';
+		$return['pwd'] = $pwd;
+		$data = array();
+		$data['username'] = 'wx_'+time();
+		$data['nicename'] = $userinfo['nickname'];
+		$data['regtime'] = time();
+		$data['regip'] = get_client_ip();
+		$data['password'] = md5($pwd);
+		$data['pay_passwrod'] = md5($pwd);
+		$data['headImgUrl'] = $data['headImgUrl'];
+		M('users')->add($data);
+		$return['code'] = 1;//注册
+		$return['username'] = $data['username'];
+		return $return;
 	}
 }
