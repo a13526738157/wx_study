@@ -2,6 +2,7 @@
 namespace Wx\Controller;
 use Think\Controller;
 use Org\Wechat\wechat;
+use Org\Net\IpLocation;
 /**
 *微信服务接受
 *
@@ -11,6 +12,7 @@ class IndexController extends Controller
     public function _initialize(){
 			$options = C('WX_OPTIONS');
 			$this->weObj = new Wechat($options);
+			$this->weObj->valid();
 			$this->bulid_menu();
 			//获取accessToken
 			// $accessArr = F('accessToken');
@@ -24,7 +26,6 @@ class IndexController extends Controller
 
 	}
 	public function index(){
-		$this->weObj->valid();
 		//获取回复类型
 		$type = $this->weObj->getRev()->getRevType();
 		M('test')->add(array('content'=>'消息类型：'.$type));
