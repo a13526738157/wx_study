@@ -129,6 +129,7 @@ class IndexController extends Controller
 	//注册用户
 	private function _regUser($userinfo){
 		$openid = $userinfo['openid'];
+
 		$user = M('users')->where(array('openid'=>$openid))->find();
 		if($user){
 			$return['code'] = 2;//已拥有账号
@@ -144,7 +145,7 @@ class IndexController extends Controller
 		$data['regip'] = get_client_ip();
 		$data['password'] = md5($pwd);
 		$data['pay_passwrod'] = md5($pwd);
-		$data['headImgUrl'] = $data['headImgUrl'];
+		$data['headImgUrl'] = $userinfo['headImgUrl'];
 		M('users')->add($data);
 		$return['code'] = 1;//注册
 		$return['username'] = $data['username'];
