@@ -87,8 +87,9 @@ class IndexController extends Controller
 				$this->weObj->text('您触发了点击事件')->reply();
 				break;
 			case Wechat::EVENT_SUBSCRIBE://订阅
-				$r = $this->_regUser($userinfo);
 				$this->_log($userinfo['nickname'].'关注了账号');
+			
+				$r = $this->_regUser($userinfo);
 				if($r['code'] == 1){
 					$text = '欢迎回来：'.$userinfo['nickname'];
 					$this->weObj->text($text)->reply();
