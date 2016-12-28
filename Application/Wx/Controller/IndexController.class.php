@@ -58,15 +58,11 @@ class IndexController extends Controller
 	    $menu = $weObj->getMenu();
 	    //设置菜单
 	    $newmenu =  C('WX_MENU');
-	    $result = $weObj->addconditionalMenu($newmenu);
-	   	//$result = $weObj->createMenu($newmenu);
-	}
-	//消息处理
-	private function _msg(){
-
+	    //$result = $weObj->addconditionalMenu($newmenu);
+	   	$result = $weObj->createMenu($newmenu);
 	}
 	//事件处理
-	private function _event($data){
+	protected function _event($data){
 		//事件监听
 		$event = $this->weObj->getRevEvent();
 		$userinfo = $this->userinfo;
@@ -75,7 +71,7 @@ class IndexController extends Controller
 		switch ($event['event']) {
 			case TPWechat::EVENT_LOCATION:
 				$place = $this->weObj->getRevEventGeo();//获取事件上报地址
-				$this->_log('上报地址 x:'.$place['x'].' y:'.$place['y'].' 更多:'.$place['precision']);
+				$this->_log('上报地址 纬度:'.$place['x'].' 经度:'.$place['y'].' 精度:'.$place['precision']);
 				break;
 			case TPWechat::EVENT_MENU_CLICK:
 				switch ($event['key']) {
@@ -119,12 +115,12 @@ class IndexController extends Controller
 				break;
 		}		
 	}
-	private function _log($content,$tableName = 'actionlog'){
+	protected function _log($content,$tableName = 'actionlog'){
 		$userinfo = $this->userinfo;
 		M($tableName)->add(array('content'=>$content,'user'=>$userinfo['nickname']));
 	}
 	//注册用户
-	private function _regUser($userinfo){
+	protected function _regUser($userinfo){
 		$openid = $userinfo['openid'];
 		$user = M('users')->where(array('openid'=>$openid))->find();
 		if($user){		

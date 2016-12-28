@@ -5,7 +5,7 @@ return array(
     		"button"=>
     			array(
     				array('type'=>'click','name'=>'加入会员','key'=>'quickAdd'),
-    				array('type'=>'view','name'=>'微官网','url'=>'http://woxuewangs.com'),
+    				array('type'=>'view','name'=>'微官网1','url'=>'http://woxuewangs.com'),
     				array(
                         'name'=>'更多功能',
                         'sub_button'    =>  array(
