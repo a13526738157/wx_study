@@ -84,11 +84,28 @@ class IndexController extends Controller
 				//$this->weObj->text($userinfo['nickname'].'上报地理位置成功 x:'.$place['x'].' y:'.$place['y'])->reply();
 				break;
 			case Wechat::EVENT_MENU_CLICK:
-				$this->weObj->text('您触发了点击事件')->reply();
+				switch ($event['key']) {
+					case 'quickAdd':
+						$r = $this->_regUser($userinfo);
+						if($r['code'] == 1){
+								$text = '您已经是我们的会员：'.$userinfo['nickname'];
+								$this->weObj->text($text)->reply();
+							}elseif($r['code'] == 2){
+								$text = '欢迎加入我们：'.$nickname."\n";
+								$text .= '您的账号为：'.$r['username']."\n";
+								$text .= '登陆密码和支付密码为：'.$r['username']."\n";
+								$this->weObj->text($text)->reply();
+							}	
+						break;		
+					default:
+						# code...
+						$this->weObj->text('您触发了点击事件')->reply();
+						break;
+				}
 				break;
 			case Wechat::EVENT_SUBSCRIBE://订阅
 				$this->_log($userinfo['nickname'].'关注了账号');
-			
+
 				$r = $this->_regUser($userinfo);
 				if($r['code'] == 1){
 					$text = '欢迎回来：'.$userinfo['nickname'];
