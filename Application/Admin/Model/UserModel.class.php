@@ -1,10 +1,4 @@
 <?php
-/**
- * @Author: Sincez
- * @Date:   2015-12-14 22:32:23
- * @Last Modified by:   Sincez
- * @Last Modified time: 2016-12-01 14:22:31
- */
 namespace Admin\Model;
 use Think\Model;
 class UserModel extends Model{

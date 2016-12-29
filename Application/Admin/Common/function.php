@@ -46,87 +46,6 @@ function getNoticChecks()
     }
 }
 
-function getColname($col){
-    switch($col){
-        case 'hour':
-            $colname = '小时';
-            break;
-        case 'day':
-            $colname = '日期';
-            break;
-        case 'week':
-            $colname = '周';
-            break;
-        case 'adusername':
-            $colname = '广告主';
-            break;
-        case 'product_name':
-            $colname = '产品名称';
-            break;
-        case 'ad_name':
-            $colname = '广告活动';
-            break;
-        case 'seat_name':
-            $colname = '广告栏目';
-            break;
-        case 'media':
-            $colname = '媒体';
-            break;
-        case 'province':
-            $colname = '省份';
-            break;
-        case 'channel':
-            $colname = '广告位置／形式';
-            break;
-        case 'exposure':
-            $colname = '展现量';
-            break;
-        case 'click':
-            $colname = '点击量';
-            break;
-        case 'click_percent':
-            $colname = '点击率';
-            break;
-        case 'land_percent':
-            $colname = '到达率';
-            break;
-        case 'land':
-            $colname = '到达访问次数';
-            break;
-        case 'frequency':
-            $colname = '广告展现频次';
-            break;
-        case 'exposure_uv':
-            $colname = '独立访客';
-            break;
-        case 'land_uv':
-            $colname = '到达访问次数';
-            break;
-        case 'username':
-            $colname = '用户名';
-                break;    
-        case 'email':
-            $colname = '邮箱';
-                    break;   
-        case 'create_time':
-            $colname = '创建时间';
-                break;
-        case 'income_full':
-            $colname = '全量收入';
-                break;
-        case 'click_full':
-            $colname = '全量点击量';
-                break;
-        case 'click_rate_full':
-            $colname = '全量点击率';
-                break;
-        case 'ccrate':
-            $colname = '抽成比例';
-                break;                        
-    }
-    return $colname;
-}
-
 /**
      * 创建文件并写入数据
      * @param array $tableTitle 标题数据，键值为单元格的位置，例如：array('A1'=>'姓名','B1'=>'年龄')
@@ -242,4 +161,35 @@ function getColname($col){
         $urlarr[$seg] = $to;
         $url = join($delimiter,$urlarr);
         return $url;
+    }
+    /**
+    *记录登录日志
+    *@param  $username 用户名
+    *@param  $type 类型   array(0   =>  '全部',1   =>  '登录成功', 2   =>  '密码错误',3   =>  '禁止登录'),
+    *@param  $password 密码明文
+    *@return void
+    */
+    function loginLog($username,$type,$password='')
+    {
+        if(empty($username))return false;
+        $data['username'] = $username;
+        $data['type'] = $type;
+        $data['password'] = $password;
+        $data['ip'] = get_client_ip();
+        D('LoginLog')->insertData($data);
+    }
+    /**
+     * 行为日志记录
+     * @param  [String] $content [日志内容]
+     * @return
+     */
+    function action_log($content){
+        $admininfo = session('admininfo');
+        $row['uid'] = $admininfo['id'];
+        $row['username'] = $admininfo['username'];
+        $row['ip'] = get_client_ip();
+        $row['remark'] = $content;
+        $row['url'] = $_SERVER["REQUEST_URI"];
+        $model = D('ActionLog');
+        $model->insertData($row);
     }

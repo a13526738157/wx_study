@@ -35,24 +35,7 @@ function delQiniuOnePic($pic_name){
 function returnUrl() {
 	return isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null;
 }
-/**
- * 行为日志记录
- * @param  [String] $content [日志内容]
- * @return
- */
-function action_log($content){
-	if(session('userinfo.back_yes')){
-		$row['uid'] = session('userinfo.from_uid');
-	} else {
-		$row['uid'] = session('userinfo.uid');
-	}
-    $row['add_time'] = time();
-    $row['ip'] = get_Ip();
-    $row['remark'] = $content;
-    $row['url'] = $_SERVER["REQUEST_URI"];
-    $model = new \Admin\Model\ActionlogModel();
-    $model->insertData($row);
-}
+
 
 function create_Url($url, $info, $appUrl = '', $attr =''){
     $result = authCheck($url);

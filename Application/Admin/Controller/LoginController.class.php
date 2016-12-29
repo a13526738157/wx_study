@@ -10,6 +10,18 @@ class LoginController extends Controller{
 	}
 	public function action(){
 		$do = I('do');
+		switch ($do) {
+			case 'login':
+				$this->_login();
+				break;
+			
+			default:
+				# code...
+				break;
+		}
+
+	}
+	private function _login(){	//name:用户登录
 		if(IS_POST){
 			$row = I('post.');
 			unset($return);
@@ -25,11 +37,32 @@ class LoginController extends Controller{
 				$admin = D('Admin')->getData($row);
 				if(!$admin){
 					//账号不存在
+					loginLog($row['username'],4,$row['password']);
+					$return['error'] = '账号或者密码错误';
+				}
+				elseif($admin['del']!=1){
+					loginLog($row['username'],5,$row['password']);
 					$return['error'] = '账号或者密码错误';
 				}
 				elseif($admin['password']!=md5($row['password'])){
 					//密码错误
+					loginLog($row['username'],2,$row['password']);
 					$return['error'] = '账号或者密码错误';
+				}
+				elseif($admin['status']==0){
+					$return['error'] = '账号已被禁止';
+					loginLog($row['username'],3,$row['password']);
+				}else{
+					loginLog($row['username'],1,$row['password']);
+					action_log('用户登录：【用户账号：'.$row['username'].'】');
+					session('admininfo',$admin);
+					if(empty(session('ref'))){
+						$url = U('index/index');
+					}else{
+						$url = U(session('ref'));
+					}
+					if(IS_AJAX)$this->ajaxReturn(array('ok'=>'','url'=>$url));
+					$this->redirect($url);
 				}
 
 			}

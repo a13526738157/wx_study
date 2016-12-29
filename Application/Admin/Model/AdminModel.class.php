@@ -3,7 +3,7 @@ namespace Admin\Model;
 use Think\Model;
 class AdminModel extends Model{
 
-    protected $tableName = 'users';
+    protected $tableName = 'admin';
 
     public $col = 'username,nickname,password,code,from,curip,cur_time,lastip,lasttime,createip,create_time,status,del';
 
@@ -34,7 +34,7 @@ class AdminModel extends Model{
     public function getData($row=array(),$mode=0){
     	if(isset($row['username']))
     		$where['username'] = $row['username'];
-    	if(isset($where))
+        if(isset($where))
     		$this->where($where);
     	if($mode == 0){
     		return $this->find();
