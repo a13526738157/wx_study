@@ -112,18 +112,33 @@ class IndexController extends Controller
 				}		
 				break;
 			case TPWechat::EVENT_UNSUBSCRIBE://取消订阅
-				$this->_log($userinfo['nickname']);
+				$this->_log($userinfo['nickname'].'取消订阅');
+				$this->_unsubscribe();
 				break;	
 			default:
 				//$this->weObj->text('更多事件')->reply();
 				break;
 		}		
 	}
+	protected function _unsubscribe(){
+		$userinfo = $this->userinfo;//收取的用户信息
+		$openid = $userinfo['openid'];
+		M('users')->where(array('openid'=>$openid,'subscribe'=>1))->setField(array('subscribe'=>0));
+
+	}
+	protected function _subscribe(){
+		$userinfo = $this->userinfo;//收取的用户信息
+		$openid = $userinfo['openid'];
+		M('users')->where(array('openid'=>$openid,'subscribe'=>0))->setField(array('subscribe'=>1));
+	}
 	//注册用户
 	protected function _regUser($userinfo){
 		$openid = $userinfo['openid'];
 		$user = M('users')->where(array('openid'=>$openid))->find();
 		if($user){		
+			if($user['subscribe']==0){
+				$this->_subscribe();
+			}
 			$return['code'] = 2;//已拥有账号
 			return $return;
 		}

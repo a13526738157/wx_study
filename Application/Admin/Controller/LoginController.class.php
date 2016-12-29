@@ -6,6 +6,9 @@ class LoginController extends Controller{
 		if(I('ref')){
 			session('ref',base64_decode(I('ref')));
 		}
+		if(session('admininfo')||cookie('admininfo')){
+			$this->redirect(U('index/index'));
+		}
 		$this->display();
 	}
 	public function action(){
@@ -14,7 +17,9 @@ class LoginController extends Controller{
 			case 'login':
 				$this->_login();
 				break;
-			
+			case 'logout':
+				$this->_logout();
+				break;
 			default:
 				# code...
 				break;
@@ -56,6 +61,8 @@ class LoginController extends Controller{
 					loginLog($row['username'],1,$row['password']);
 					action_log('用户登录：【用户账号：'.$row['username'].'】');
 					session('admininfo',$admin);
+					//一周
+					cookie('admininfo',$admin,86400*7);
 					if(empty(session('ref'))){
 						$url = U('index/index');
 					}else{
@@ -73,5 +80,12 @@ class LoginController extends Controller{
 			if(IS_AJAX)$this->ajaxReturn(array('error'=>'请求方式错误'));
 			$this->error('请求方式错误');
 		}
+	}
+	private function _logout(){	//name:退出登录
+		session('admininfo',null);
+		cookie('admininfo',null);
+		$url = U('login/index');
+		if(IS_AJAX)$this->ajaxReturn(array('ok'=>'','url'=>$url));
+		$this->redirect($url);
 	}
 }
