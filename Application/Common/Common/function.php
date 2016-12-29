@@ -35,7 +35,24 @@ function delQiniuOnePic($pic_name){
 function returnUrl() {
 	return isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null;
 }
-
+/**
+ * 权限验证
+ * @param rule string|array  需要验证的规则列表,支持逗号分隔的权限规则或索引数组
+ * @param uid  int           认证用户的id
+ * @param string mode        执行check的模式
+ * @param relation string    如果为 'or' 表示满足任一条规则即通过验证;如果为 'and'则表示需满足所有规则才能通过验证
+ * @return boolean           通过验证返回true;失败返回false
+ * @return author            黄药师		46914685@qq.com
+ */
+function authCheck($rule, $uid, $type = 1, $mode = 'url', $relation = 'or') {
+	// echo $rule;die;
+	// return true;
+	//超级管理员跳过验证
+	$auth = new \Think\Auth();
+    $id = $id ? $id : session('admininfo.id');
+	return $auth->check($rule, $id, $type, $mode, $relation) ? true : false;
+}
+//左侧菜单
 
 function create_Url($url, $info, $appUrl = '', $attr =''){
     $result = authCheck($url);
@@ -411,4 +428,22 @@ function saveimage($path) {
         }
     
     return $savepath; //返回本地保存绝对路径
+}
+/**
+*获得后台菜单
+*
+*/
+function getAdminMenu(){
+	$menuArr = F('AdminMenu');
+	$groupid = session('admininfo.group_id');
+	if($menuArr['group_id']==$groupid){
+		return $menuArr['menu'];
+	}else{
+		$groupinfo = D('Group')->find($groupid);
+		$menu = D('Auth')->getLeftMenu($groupinfo['rules']);
+		$menuArr['menu'] = $menu;
+		$menuArr['group_id'] = $groupid;
+		F('AdminMenu',$menuArr);
+		return $menu;
+	}
 }

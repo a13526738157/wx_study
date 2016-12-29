@@ -15,7 +15,14 @@ class AdminController extends Controller {
     		}
     	}
     	//TOOD:AUTH认证
-
+        $cur = CONTROLLER_NAME."/".ACTION_NAME;
+		//权限验证
+		if(!authCheck($cur,$admininfo['id'])){
+			session('admininfo',null);
+            cookie('admininfo',null);
+            $this->error('您的权限不足',U('login/index'));
+        }
+		$this->nav = getAdminMenu();
 	}
 
 }

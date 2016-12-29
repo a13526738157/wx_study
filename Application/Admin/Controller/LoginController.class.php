@@ -58,11 +58,13 @@ class LoginController extends Controller{
 					$return['error'] = '账号已被禁止';
 					loginLog($row['username'],3,$row['password']);
 				}else{
+					//获得组id
+					$group_id = D('Access')->getGroupId($admin['id']);
+					$admin['group_id'] = $group_id;
 					loginLog($row['username'],1,$row['password']);
 					action_log('用户登录：【用户账号：'.$row['username'].'】');
 					session('admininfo',$admin);
-					//一周
-					cookie('admininfo',$admin,86400*7);
+					cookie('admininfo',$admin,86400*7);#一周时间
 					if(empty(session('ref'))){
 						$url = U('index/index');
 					}else{

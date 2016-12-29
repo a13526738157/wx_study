@@ -22,18 +22,10 @@ class AuthModel extends Model
         }
     }
 
-    public function firstMenu(){
-        $groupid = session('userinfo.groupid');
+    public function firstMenu($groupid){
         $groupinfo = D('Group')->find($groupid);
-        // if($groupid!=1 && !session('userinfo.back_yes')){
-            
-        // }
-        $leftmenu = D('Auth')->getLeftMenu($groupinfo['rules']);
-        $curlan = strtolower(cookie('think_language'));
-        $admin_menu = $curlan == 'zh-cn'?array('系统设置'):array('System settings');
+        $leftmenu = $this->getLeftMenu($groupinfo['rules']);  
         foreach($leftmenu as $vo){
-            // $curtitle = $curlan == 'zh-cn'?$vo['title']:$vo['title_en'];
-            // if(($groupid==1 && !in_array($curtitle,$admin_menu)) || (session('userinfo.back_yes')==1 && in_array($curtitle,$admin_menu)))continue;
             $i=1;
             foreach($vo['tree'] as $v){
                 if($i == 1){
@@ -68,7 +60,7 @@ class AuthModel extends Model
         }
         $where['is_show'] = 1;
         // $where['is_menu'] = 1;
-        $data = $this->order('if(ord=0,9999,ord)')->where($where)->select();
+        $data = $this->order('if(listorder=0,9999,listorder)')->where($where)->select();
         $result = $this->getTree(0,$data);
         foreach($result as $v){
             if($v['name'] && authcheck($v['name']) && $v['is_show']){
@@ -89,10 +81,15 @@ class AuthModel extends Model
                 continue;
             }
             // $item[$v['id']] = $v;print_r($item);die;
-            $item[$v['id']] = array('id'=>$v['id'],'pid'=>$v['pid'],'title'=>$v['title'],'title_en'=>$v['title_en'],'name'=>$v['name'],'type'=>$v['type'],'status'=>$v['status'],'condition'=>$v['condition'],'is_show'=>$v['is_show'],'is_open'=>$v['is_open'],'ord'=>$v['ord'],'class'=>$v['class']);
+            $item[$v['id']] = array('id'=>$v['id'],'pid'=>$v['pid'],'title'=>$v['title'],'name'=>$v['name'],'type'=>$v['type'],'status'=>$v['status'],'condition'=>$v['condition'],'is_show'=>$v['is_show'],'listorder'=>$v['listorder'],'class'=>$v['class']);
+            if($v['name']==CONTROLLER_NAME.'/'.ACTION_NAME) $item[$v['id']]['isopen'] = 1;
             foreach($v['tree'] as $t){
                 if(!authcheck($t['name']))continue;
                 $item[$v['id']]['tree'][$t['id']] = $t;
+                if($t['name']==CONTROLLER_NAME.'/'.ACTION_NAME){
+                    $item[$v['id']]['isopen'] = 1;
+                    $item[$v['id']]['tree'][$t['id']]['isopen'] = 1;
+                }
                 if(!$t['tree']){
                     continue;
                 }
@@ -102,8 +99,6 @@ class AuthModel extends Model
                 }
             }
         }
-
-
         return $item;
 
     }
