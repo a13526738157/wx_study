@@ -4,14 +4,14 @@ return array(
 	//'配置项'=>'配置值'
 	//数据库配置信息
     'DB_TYPE' => 'mysql', // 数据库类型
-    // 'DB_HOST' => '122.114.90.180', // 服务器地址
-    // 'DB_NAME' => 'ht', // 数据库名
-    // 'DB_USER' => 'user_1', // 用户名
-    // 'DB_PWD' => 'user_1', // 密码
-    'DB_HOST' => 'localhost', // 服务器地址
+    'DB_HOST' => '122.114.90.180', // 服务器地址
     'DB_NAME' => 'ht', // 数据库名
-    'DB_USER' => 'root', // 用户名
-    'DB_PWD' => 'root', // 密码
+    'DB_USER' => 'user_1', // 用户名
+    'DB_PWD' => 'user_1', // 密码
+    // 'DB_HOST' => 'localhost', // 服务器地址
+    // 'DB_NAME' => 'ht', // 数据库名
+    // 'DB_USER' => 'root', // 用户名
+    // 'DB_PWD' => 'root', // 密码
     'DB_PORT' => 3306, // 端口
     'DB_PREFIX' => 'ht_', // 数据库表前缀
     'DB_CHARSET'=> 'utf8', // 字符集
@@ -27,6 +27,8 @@ return array(
     'APP_SUB_DOMAIN_DEPLOY'   =>    1, // 开启子域名配置
     'APP_SUB_DOMAIN_RULES'    =>    array(   
         'ht'  => 'Admin',  // admin.domain1.com域名指向Admin模块
+        'blogch.top'    =>  'Admin',
+        'www.blogch.top' => 'Admin',   
         'wx.woxuewangs.com'	=>	'Wx',
         'woxuewangs.com'	=>	'Home',
         'www.woxuewangs.com'	=>	'Home',
