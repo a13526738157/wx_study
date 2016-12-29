@@ -4,8 +4,8 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Amaze UI Admin index Examples</title>
-    <meta name="description" content="这是一个 index 页面">
+    <title>{$init.title}</title>
+    <meta name="description" content="{$init.desc}">
     <meta name="keywords" content="index">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="renderer" content="webkit">
@@ -19,7 +19,32 @@
     <script src="__PUBLIC__/admin/assets/js/jquery.min.js"></script>
 
 </head>
+<style>
+  #vld-tooltip {
+    position: absolute;
+    z-index: 1000;
+    padding: 5px 10px;
+    background: #F37B1D;
+    min-width: 150px;
+    color: #fff;
+    transition: all 0.15s;
+    box-shadow: 0 0 5px rgba(0,0,0,.15);
+    display: none;
+  }
 
+  #vld-tooltip:before {
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    width: 0;
+    height: 0;
+    margin-left: -8px;
+    content: "";
+    border-width: 0 8px 8px;
+    border-color: transparent transparent #F37B1D;
+    border-style: none inset solid;
+  }
+</style>
 <body data-type="login">
     <script src="__PUBLIC__/admin/assets/js/theme.js"></script>
     <div class="am-g tpl-g">
@@ -28,14 +53,14 @@
             <div class="tpl-login-content">
                 <div class="tpl-login-logo">
                 </div>
-                <form class="am-form tpl-form-line-form">
+                <form class="am-form tpl-form-line-form" id="form">
                     <div class="am-form-group">
-                        <input type="text" class="tpl-form-input" id="user-name" placeholder="请输入账号">
+                        <input type="text" class="tpl-form-input" name="username"  minlength="3" placeholder="输入用户名（至少 6 个字符）">
 
                     </div>
 
                     <div class="am-form-group">
-                        <input type="password" class="tpl-form-input" id="user-name" placeholder="请输入密码">
+                        <input type="password" class="tpl-form-input" name="password" placeholder="请输入登录密码">
 
                     </div>
                     <div class="am-form-group tpl-login-remember-me">
@@ -54,7 +79,7 @@
 
                     <div class="am-form-group">
 
-                        <button type="button" class="am-btn am-btn-primary  am-btn-block tpl-btn-bg-color-success  tpl-login-btn">提交</button>
+                        <button  class="am-btn am-btn-primary  am-btn-block tpl-btn-bg-color-success  tpl-login-btn">提交</button>
 
                     </div>
                 </form>
@@ -63,10 +88,56 @@
     </div>
     <script src="__PUBLIC__/admin/assets/js/amazeui.min.js"></script>
     <script src="__PUBLIC__/admin/assets/js/app.js"></script>
+    <!-- 表单验证 -->
+    <js file="__PUBLIC__/admin/assets/plugins/nice-validator-0.8.1/jquery.validator.js"/>
+    <js file="__PUBLIC__/admin/assets/plugins/nice-validator-0.8.1/local/zh-CN.js"/>
+    <css file="__PUBLIC__/admin/assets/plugins/nice-validator-0.8.1/jquery.validator.css"/>    
     <script>
-        var Page = {
-            
-        }
+    $(document).ready(function() {
+      $('form').validator({
+            theme:'yellow_top',
+            msgClass:'n-right',
+            msgIcon:'',
+            msgMaker: function(opt){
+              if(!opt.msg){
+                return '';
+              }
+              return '<span class="msg-wrap n-error" role="alert" style="top:8px;"><span class="n-msg" style="top:8px;">'+opt.msg+'</span></span>'
+            },
+            messages:{
+                'required':'{0} 不能为空！'
+            },
+            fields: {
+                'username': "用户名:required;username",
+                'password': "密码:required;password",
+                'verify': "验证码:required;remote[post:{:U('Login/check')}]"
+            },
+            valid:function(form){
+              var loading = layer.load(1, {
+                shade: [0.1,'#fff'] //0.1透明度的白色背景
+              });
+              $(form).ajaxSubmit({
+                dataType:'json',
+                success:function(res){
+                  layer.close(loading);
+                  if(res.status !=1){
+                    layer.confirm(res.msg, {
+                        btn: ['确定'], //按钮
+                        closeBtn:0
+                    }, function() {
+                        layer.closeAll();
+                        // $('#username,#password,#verify').val('')
+                        window.location.reload();
+                    });
+                  } else {
+
+                    window.location.href=res.url;
+                  }
+                }
+              });
+            }
+        });
+    });
     </script>
 </body>
 
